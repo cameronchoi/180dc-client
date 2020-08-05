@@ -1,0 +1,17 @@
+.react-calendar {
+  min-width: 500px;
+}
+
+.react-calendar__tile {
+  height: 50px;
+}
+
+.react-calendar__tile--active {
+  background: #1da57a;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1da57a;
+}
