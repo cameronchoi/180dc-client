@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   TableContainer,
   Table,
@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   table: {
-    width: 350,
+    width: 300,
     [theme.breakpoints.up('sm')]: {
       width: 580
     }
@@ -28,12 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const InterviewTimes = ({
-  times,
-  handleSelectAllClick,
-  rowCount,
-  numSelected
-}) => {
+const InterviewTimes = ({ times, handleClick }) => {
   const classes = useStyles()
 
   return (
@@ -41,24 +36,26 @@ const InterviewTimes = ({
       <Table className={classes.table} stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>
-              <Checkbox
-                onChange={handleSelectAllClick}
-                checked={rowCount > 0 && numSelected === rowCount}
-              />
-            </TableCell>
+            <TableCell></TableCell>
             <TableCell align='center'>Time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {times.map(time => {
-            console.log(time.time)
             return (
-              <TableRow key={time.id}>
+              <TableRow
+                key={time.id}
+                hover
+                onClick={() => {
+                  handleClick(time.index)
+                }}
+              >
                 <TableCell>
-                  <Checkbox />
+                  <Checkbox checked={time.selected} />
                 </TableCell>
-                <TableCell align='center'>{time.time}</TableCell>
+                <TableCell align='center'>
+                  {time.date.toLocaleString()}
+                </TableCell>
               </TableRow>
             )
           })}

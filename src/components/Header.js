@@ -33,7 +33,7 @@ const Header = ({ history }) => {
     })
   }
   return (
-    <Paper elevation='6'>
+    <Paper elevation={6}>
       <AppBar position='static' color='primary'>
         <Toolbar>
           <Box className={classes.logoStyles}>

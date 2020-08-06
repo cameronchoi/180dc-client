@@ -7,7 +7,7 @@ import {
 import { Grid, Paper } from '@material-ui/core'
 
 import 'react-calendar/dist/Calendar.css'
-import Interviewee from './pages/interviewee/Interviewee'
+import Interviewee from './pages/Interviewee'
 import Interviewer from './pages/Interviewer'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -21,28 +21,29 @@ import EnhancedTable from './EnhancedTable'
 
 // import SignIn from './pages/SignIn'
 
-const theme = createMuiTheme({
-  //   palette: {
-  //     primary: lightGreen,
-  //     secondary: purple
-  //   }
-})
-
 function App () {
+  const theme = createMuiTheme({
+    palette: {
+      //   type: 'dark'
+      //   primary: lightGreen
+      // secondary: purple
+    }
+  })
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/interviewee' component={Interviewee} />
-          <Route path='/foot' component={StickyFooter} />
-          <Route path='/enhancedtable' component={EnhancedTable} />
+      <Paper>
+        <Router>
+          <Switch>
+            <Route path='/login' component={Login} />
+            <Route path='/interviewee' component={Interviewee} />
+            <Route path='/interviewer' component={Interviewer} />
 
-          {/* <ProtectedRoute path='/interviewee' component={Interviewee} /> */}
-          <ProtectedRoute path='/interviewer' component={Interviewer} />
-          <Route path='*' component={NotFound} />
-        </Switch>
-      </Router>
+            {/* <ProtectedRoute path='/interviewee' component={Interviewee} /> */}
+            {/* <ProtectedRoute path='/interviewer' component={Interviewer} /> */}
+            <Route path='*' component={NotFound} />
+          </Switch>
+        </Router>
+      </Paper>
     </ThemeProvider>
   )
 }

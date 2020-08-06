@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Interviewer = props => {
+const Interviewee = props => {
   const classes = useStyles()
   const [availableTimes, setAvailableTimes] = useState([])
   const [dayTimes, setDayTimes] = useState([])
@@ -67,7 +67,7 @@ const Interviewer = props => {
   }
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/interviewertimes')
+    fetch('http://127.0.0.1:8000/api/intervieweetimes')
       .then(res => res.json())
       .then(resData => {
         let times = []
@@ -82,18 +82,14 @@ const Interviewer = props => {
             index: i
           })
         })
-        if (times.length > 0) {
-          setAvailableTimes(times)
-          setDate(times[0].date)
-          setStartDate(times[0].date)
-          setEndDate(times[times.length - 1].date)
-          let currentDayTimes = times.filter(time =>
-            isSameDay(time.date, times[0].date)
-          )
-          setDayTimes(currentDayTimes)
-        } else {
-          alert('No times are available. Please email 180DC@email.com')
-        }
+        setAvailableTimes(times)
+        setDate(times[0].date)
+        setStartDate(times[0].date)
+        setEndDate(times[times.length - 1].date)
+        let currentDayTimes = times.filter(time =>
+          isSameDay(time.date, times[0].date)
+        )
+        setDayTimes(currentDayTimes)
       })
   }, [])
 
@@ -156,7 +152,7 @@ const Interviewer = props => {
                 if (sendTimes.length < 2 && availableTimes.length > 1) {
                   return alert('Please select at least two times')
                 } else {
-                  fetch('http://127.0.0.1:8000/api/interviewertimes', {
+                  fetch('http://127.0.0.1:8000/api/intervieweetimes', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
@@ -168,6 +164,10 @@ const Interviewer = props => {
                     .then(res => res.json())
                     .then(resData => {
                       console.log(resData)
+                    })
+                    .catch(err => {
+                      console('hellloooooooo')
+                      alert('something went wrong...')
                     })
                 }
               }}
@@ -187,4 +187,4 @@ const Interviewer = props => {
   )
 }
 
-export default Interviewer
+export default Interviewee
