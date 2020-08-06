@@ -16,6 +16,8 @@ import purple from '@material-ui/core/colors/purple'
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
+import StickyFooter from './pages/StickyFooter'
+import EnhancedTable from './EnhancedTable'
 
 // import SignIn from './pages/SignIn'
 
@@ -33,6 +35,9 @@ function App () {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/interviewee' component={Interviewee} />
+          <Route path='/foot' component={StickyFooter} />
+          <Route path='/enhancedtable' component={EnhancedTable} />
+
           {/* <ProtectedRoute path='/interviewee' component={Interviewee} /> */}
           <ProtectedRoute path='/interviewer' component={Interviewer} />
           <Route path='*' component={NotFound} />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   TableContainer,
   Table,
@@ -12,29 +12,56 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   table: {
-    minWidth: 500
+    width: 350,
+    [theme.breakpoints.up('sm')]: {
+      width: 580
+    }
+  },
+  tableContainer: {
+    maxHeight: 300,
+    overflowY: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      maxHeight: 450
+    }
   }
 }))
 
-const InterviewTimes = () => {
+const InterviewTimes = ({
+  times,
+  handleSelectAllClick,
+  rowCount,
+  numSelected
+}) => {
   const classes = useStyles()
+
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table}>
+    <TableContainer component={Paper} className={classes.tableContainer}>
+      <Table className={classes.table} stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>
-              <Checkbox />
+              <Checkbox
+                onChange={handleSelectAllClick}
+                checked={rowCount > 0 && numSelected === rowCount}
+              />
             </TableCell>
-            <TableCell>Time</TableCell>
+            <TableCell align='center'>Time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>9am</TableCell>
-          </TableRow>
+          {times.map(time => {
+            console.log(time.time)
+            return (
+              <TableRow key={time.id}>
+                <TableCell>
+                  <Checkbox />
+                </TableCell>
+                <TableCell align='center'>{time.time}</TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>

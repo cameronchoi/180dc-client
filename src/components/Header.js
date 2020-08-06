@@ -37,12 +37,7 @@ const Header = ({ history }) => {
       <AppBar position='static' color='primary'>
         <Toolbar>
           <Box className={classes.logoStyles}>
-            <img
-              src={logo}
-              className='App-logo'
-              alt='logo'
-              style={{ height: 50 }}
-            />
+            <img src={logo} alt='logo' style={{ height: 50 }} />
           </Box>
           {/* <Button
             className={classes.buttonStyles}
