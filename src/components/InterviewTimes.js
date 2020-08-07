@@ -63,7 +63,7 @@ const InterviewTimes = ({ times, handleClick }) => {
                 }}
               >
                 <TableCell>
-                  <Checkbox checked={time.selected} />
+                  <Checkbox checked={time.selected} color='primary' />
                 </TableCell>
                 <TableCell align='center'>{time.date.toDateString()}</TableCell>
                 <TableCell align='center'>

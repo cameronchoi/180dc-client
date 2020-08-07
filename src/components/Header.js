@@ -25,7 +25,7 @@ const Header = ({ history }) => {
     })
   }
   return (
-    <AppBar position='static' color='primary'>
+    <AppBar position='static' color='secondary'>
       <Toolbar>
         <Box className={classes.logoStyles}>
           <img src={logo} alt='logo' style={{ height: 50 }} />
@@ -42,7 +42,7 @@ const Header = ({ history }) => {
         <Button
           onClick={onClickHandler}
           variant='contained'
-          color='secondary'
+          color='primary'
           disableRipple={true}
           disableElevation={true}
         >

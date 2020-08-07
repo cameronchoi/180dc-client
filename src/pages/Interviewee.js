@@ -12,26 +12,29 @@ import './calendar.css'
 import { InterviewContext } from '../contexts/InterviewContext'
 
 const useStyles = makeStyles(theme => ({
-  center: {
-    textAlign: 'center'
-  },
-  table: {
-    marginBottom: 30
+  buttonContainer: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(2)
   },
   submitButton: {
-    marginBottom: 30,
-    marginTop: 30,
     maxWidth: 300
   },
-  smallText: {
+  text: {
     textAlign: 'center',
-    marginLeft: 20,
-    marginRight: 20
+    margin: theme.spacing(2)
   },
-  overflowHide: {
+  lastText: {
+    textAlign: 'center',
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(4)
+  },
+  root: {
     overflowX: 'hidden',
-    display: 'flex',
-    flexDirection: 'column'
+    minHeight: '100vh'
+  },
+  margin: {
+    marginBottom: 40
   }
 }))
 
@@ -141,29 +144,39 @@ const Interviewee = props => {
   }
 
   return (
-    <div className={classes.overflowHide}>
-      <Grid container direction='column' spacing={5}>
-        <Grid item>
-          <Header history={props.history} />
+    <Grid
+      container
+      className={classes.root}
+      direction='column'
+      justify='space-between'
+    >
+      <Grid item>
+        <Header history={props.history} />
+      </Grid>
+      <Grid item alignItems='center' direction='column' spacing={10}>
+        <Grid item xs={12} className={classes.text}>
+          <Typography variant='h4'>Enter your available times</Typography>
         </Grid>
-        <Grid item container direction='column' spacing={3}>
-          <Grid item xs={12} className={classes.center}>
-            <Typography variant='h4'>Enter your available times</Typography>
-          </Grid>
-          <Grid item xs={12} className={classes.smallText}>
-            <Typography variant='body1'>
-              1. Click a day on the calendar to display all the available times
-              during that day.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} className={classes.smallText}>
-            <Typography variant='body1'>
-              2. Click on all your available times during that specific day.
-            </Typography>
-          </Grid>
+        <Grid item xs={12} className={classes.text}>
+          <Typography variant='body1'>
+            1. Click a day on the calendar to display all the available times
+            during that day.
+          </Typography>
+        </Grid>
+        <Grid item xs={12} className={classes.lastText}>
+          <Typography variant='body1'>
+            2. Click on all your available times during that specific day.
+          </Typography>
         </Grid>
         <Grid item container justify='center' alignItems='center'>
-          <Grid item container md={12} lg={5} justify='center'>
+          <Grid
+            item
+            container
+            md={12}
+            lg={5}
+            justify='center'
+            className={classes.margin}
+          >
             <Grid item>
               <Paper elevation={3}>
                 <Calendar
@@ -176,27 +189,87 @@ const Interviewee = props => {
               </Paper>
             </Grid>
           </Grid>
-          <Grid item container md={12} lg={5} justify='center'>
+          <Grid
+            item
+            container
+            md={12}
+            lg={5}
+            justify='center'
+            className={classes.margin}
+          >
             <Grid item className={classes.table}>
               <InterviewTimes times={dayTimes} handleClick={handleClick} />
             </Grid>
           </Grid>
-          <Grid item xs={12} className={classes.center}>
-            <Button
-              onClick={submitHandler}
-              variant='contained'
-              color='primary'
-              fullWidth
-              className={classes.submitButton}
-              size='large'
-            >
-              Submit Times
-            </Button>
-          </Grid>
+        </Grid>
+        <Grid item xs={12} className={classes.buttonContainer}>
+          <Button
+            onClick={submitHandler}
+            variant='contained'
+            color='primary'
+            fullWidth
+            className={classes.submitButton}
+            size='large'
+          >
+            Submit Times
+          </Button>
         </Grid>
       </Grid>
-      <Footer />
-    </div>
+      <Grid item>
+        <Footer />
+      </Grid>
+    </Grid>
+
+    //   <Grid item container>
+    //     <Grid item container direction='column' spacing={3}>
+    //       <Grid item xs={12} className={classes.text}>
+    //         <Typography variant='h4'>Enter your available times</Typography>
+    //       </Grid>
+    //   <Grid item xs={12} className={classes.text}>
+    //     <Typography variant='body1'>
+    //       1. Click a day on the calendar to display all the available times
+    //       during that day.
+    //     </Typography>
+    //   </Grid>
+    //   <Grid item xs={12} className={classes.text}>
+    //     <Typography variant='body1'>
+    //       2. Click on all your available times during that specific day.
+    //     </Typography>
+    //   </Grid>
+    //     </Grid>
+    // <Grid item container justify='center' alignItems='center'>
+    //   <Grid item container md={12} lg={5} justify='center'>
+    //     <Grid item>
+    //       <Paper elevation={3}>
+    //         <Calendar
+    //           onChange={onChangeHandler}
+    //           value={date}
+    //           minDate={startDate}
+    //           maxDate={endDate}
+    //           tileDisabled={tileDisabled}
+    //         />
+    //       </Paper>
+    //     </Grid>
+    //   </Grid>
+    //   <Grid item container md={12} lg={5} justify='center'>
+    //     <Grid item className={classes.table}>
+    //       <InterviewTimes times={dayTimes} handleClick={handleClick} />
+    //     </Grid>
+    //   </Grid>
+    //   <Grid item xs={12} className={classes.center}>
+    //     <Button
+    //       onClick={submitHandler}
+    //       variant='contained'
+    //       color='primary'
+    //       fullWidth
+    //       className={classes.submitButton}
+    //       size='large'
+    //     >
+    //       Submit Times
+    //     </Button>
+    //   </Grid>
+    //     </Grid>
+    //   </Grid>
   )
 }
 
