@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Grid, Typography, Button, Paper } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import {
+  Grid,
+  Typography,
+  Button,
+  Paper,
+  CircularProgress
+} from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -9,7 +15,8 @@ import Calendar from 'react-calendar'
 import InterviewTimes from '../components/InterviewTimes'
 import Footer from '../components/Footer'
 import './calendar.css'
-import { InterviewContext } from '../contexts/InterviewContext'
+
+import Cookies from 'js-cookie'
 
 const useStyles = makeStyles(theme => ({
   buttonContainer: {
@@ -21,32 +28,37 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     textAlign: 'center',
-    margin: theme.spacing(2)
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
-  lastText: {
+  title: {
     textAlign: 'center',
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(4)
+    marginTop: theme.spacing(2)
   },
   root: {
     overflowX: 'hidden',
     minHeight: '100vh'
   },
-  margin: {
-    marginBottom: 40
+  table: {
+    marginBottom: 15
   }
 }))
 
-const Interviewee = props => {
+const SelectTimes = props => {
   const classes = useStyles()
-  const [interviewState, interviewDispatch] = useContext(InterviewContext)
+  //   const [state, dispatch] = useContext(AuthContext)
+
+  const userToken = Cookies.get('userToken')
+  const position = Cookies.get('position')
 
   const [availableTimes, setAvailableTimes] = useState([])
   const [dayTimes, setDayTimes] = useState([])
   const [date, setDate] = useState()
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
+  const [loading, setLoading] = useState(false)
 
   const onChangeHandler = nextDate => {
     setDate(nextDate)
@@ -54,6 +66,37 @@ const Interviewee = props => {
       isSameDay(time.date, nextDate)
     )
     setDayTimes(currentDayTimes)
+  }
+
+  const positionPostTimes = (position, sendTimes) => {
+    setLoading(true)
+    fetch(`http://127.0.0.1:8000/api/${position}times`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${userToken}`
+      },
+      body: JSON.stringify({
+        availableTimes: sendTimes
+      })
+    })
+      .then(res => res.json())
+      .then(resData => {
+        if (resData.errors) {
+          alert(
+            'Something went wrong... Please refresh your page and try again'
+          )
+          setLoading(false)
+        } else {
+          console.log(resData)
+          setLoading(false)
+          props.history.push('/allocation')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        alert('something went wrong...')
+      })
   }
 
   const submitHandler = () => {
@@ -66,31 +109,7 @@ const Interviewee = props => {
     if (sendTimes.length < 2 && availableTimes.length > 1) {
       return alert('Please select at least two times')
     } else {
-      fetch('http://127.0.0.1:8000/api/intervieweetimes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          availableTimes: sendTimes
-        })
-      })
-        .then(res => res.json())
-        .then(resData => {
-          if (resData.errors) {
-            alert(
-              'Something went wrong... Please refresh your page and try again'
-            )
-          } else {
-            console.log(resData)
-            interviewDispatch({ type: 'SUBMIT_TIME', time: [resData] })
-            props.history.push('/allocation')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          alert('something went wrong...')
-        })
+      positionPostTimes(position, sendTimes)
     }
   }
 
@@ -110,8 +129,12 @@ const Interviewee = props => {
     }
   }
 
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/intervieweetimes')
+  const positionGetTimes = position => {
+    fetch(`http://127.0.0.1:8000/api/${position}times`, {
+      headers: {
+        Authorization: `Token ${userToken}`
+      }
+    })
       .then(res => res.json())
       .then(resData => {
         let times = []
@@ -135,6 +158,13 @@ const Interviewee = props => {
         )
         setDayTimes(currentDayTimes)
       })
+      .catch(err => {
+        alert('Unable to fetch data...')
+      })
+  }
+
+  useEffect(() => {
+    positionGetTimes(position)
   }, [])
 
   const handleClick = index => {
@@ -153,8 +183,8 @@ const Interviewee = props => {
       <Grid item>
         <Header history={props.history} />
       </Grid>
-      <Grid item alignItems='center' direction='column' spacing={10}>
-        <Grid item xs={12} className={classes.text}>
+      <Grid item container alignItems='center' direction='column' spacing={3}>
+        <Grid item xs={12} className={classes.title}>
           <Typography variant='h4'>Enter your available times</Typography>
         </Grid>
         <Grid item xs={12} className={classes.text}>
@@ -163,20 +193,13 @@ const Interviewee = props => {
             during that day.
           </Typography>
         </Grid>
-        <Grid item xs={12} className={classes.lastText}>
+        <Grid item xs={12} className={classes.text}>
           <Typography variant='body1'>
             2. Click on all your available times during that specific day.
           </Typography>
         </Grid>
         <Grid item container justify='center' alignItems='center'>
-          <Grid
-            item
-            container
-            md={12}
-            lg={5}
-            justify='center'
-            className={classes.margin}
-          >
+          <Grid item container md={12} lg={5} justify='center'>
             <Grid item>
               <Paper elevation={3}>
                 <Calendar
@@ -189,88 +212,34 @@ const Interviewee = props => {
               </Paper>
             </Grid>
           </Grid>
-          <Grid
-            item
-            container
-            md={12}
-            lg={5}
-            justify='center'
-            className={classes.margin}
-          >
+          <Grid item container md={12} lg={5} justify='center'>
             <Grid item className={classes.table}>
               <InterviewTimes times={dayTimes} handleClick={handleClick} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} className={classes.buttonContainer}>
-          <Button
-            onClick={submitHandler}
-            variant='contained'
-            color='primary'
-            fullWidth
-            className={classes.submitButton}
-            size='large'
-          >
-            Submit Times
-          </Button>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              onClick={submitHandler}
+              variant='contained'
+              color='primary'
+              fullWidth
+              className={classes.submitButton}
+              size='large'
+            >
+              Submit Times
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid item>
         <Footer />
       </Grid>
     </Grid>
-
-    //   <Grid item container>
-    //     <Grid item container direction='column' spacing={3}>
-    //       <Grid item xs={12} className={classes.text}>
-    //         <Typography variant='h4'>Enter your available times</Typography>
-    //       </Grid>
-    //   <Grid item xs={12} className={classes.text}>
-    //     <Typography variant='body1'>
-    //       1. Click a day on the calendar to display all the available times
-    //       during that day.
-    //     </Typography>
-    //   </Grid>
-    //   <Grid item xs={12} className={classes.text}>
-    //     <Typography variant='body1'>
-    //       2. Click on all your available times during that specific day.
-    //     </Typography>
-    //   </Grid>
-    //     </Grid>
-    // <Grid item container justify='center' alignItems='center'>
-    //   <Grid item container md={12} lg={5} justify='center'>
-    //     <Grid item>
-    //       <Paper elevation={3}>
-    //         <Calendar
-    //           onChange={onChangeHandler}
-    //           value={date}
-    //           minDate={startDate}
-    //           maxDate={endDate}
-    //           tileDisabled={tileDisabled}
-    //         />
-    //       </Paper>
-    //     </Grid>
-    //   </Grid>
-    //   <Grid item container md={12} lg={5} justify='center'>
-    //     <Grid item className={classes.table}>
-    //       <InterviewTimes times={dayTimes} handleClick={handleClick} />
-    //     </Grid>
-    //   </Grid>
-    //   <Grid item xs={12} className={classes.center}>
-    //     <Button
-    //       onClick={submitHandler}
-    //       variant='contained'
-    //       color='primary'
-    //       fullWidth
-    //       className={classes.submitButton}
-    //       size='large'
-    //     >
-    //       Submit Times
-    //     </Button>
-    //   </Grid>
-    //     </Grid>
-    //   </Grid>
   )
 }
 
-export default Interviewee
+export default SelectTimes

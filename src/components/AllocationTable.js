@@ -59,18 +59,22 @@ const AllocationTable = ({ allocations }) => {
         </TableHead>
         <TableBody>
           {allocations.map(allocation => {
-            console.log(allocation)
+            let roomText = allocation.room
+
+            if (allocation.room === null) {
+              roomText = 'No Room Yet'
+            }
             return (
-              <TableRow>
+              <TableRow key={allocation.datetime}>
                 <TableCell>
-                  {convertToDateObj(allocation.interviewTime).toDateString()}
+                  {convertToDateObj(allocation.datetime).toDateString()}
                 </TableCell>
                 <TableCell>
                   {createTimeString(
-                    convertToDateObj(allocation.interviewTime).getHours()
+                    convertToDateObj(allocation.datetime).getHours()
                   )}
                 </TableCell>
-                <TableCell>{allocation.interviewRoom}</TableCell>
+                <TableCell>{roomText}</TableCell>
               </TableRow>
             )
           })}

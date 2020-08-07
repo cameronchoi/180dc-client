@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -7,7 +7,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 
-import Auth from '../Auth'
+import { AuthContext } from '../contexts/AuthContext'
+
+import Cookies from 'js-cookie'
+import { CircularProgress } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,13 +36,50 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignIn (props) {
+export default function Login (props) {
   const classes = useStyles()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const [state, dispatch] = useContext(AuthContext)
 
   const onClickHandler = () => {
-    Auth.login(() => {
-      props.history.push('/interviewee')
+    setLoading(true)
+    if (username.length === 0 || password.length === 0) {
+      return alert('Please input your username and password')
+    }
+    fetch('http://127.0.0.1:8000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
     })
+      .then(res => res.json())
+      .then(resData => {
+        if (resData.non_field_errors) {
+          alert('Your username or password is wrong')
+          setLoading(false)
+        } else {
+          console.log(resData)
+          dispatch({
+            type: 'SIGN-IN',
+            token: resData.token,
+            position: resData.position
+          })
+
+          Cookies.set('userToken', resData.token)
+          Cookies.set('position', resData.position)
+          setLoading(false)
+          props.history.push('/')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+        alert('Something went wrong...')
+      })
   }
 
   return (
@@ -63,17 +103,21 @@ export default function SignIn (props) {
       <Grid item xs={10}>
         <form className={classes.form} noValidate>
           <TextField
+            onChange={e => setUsername(e.target.value)}
+            value={username}
             variant='outlined'
             margin='normal'
             required
             fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
+            id='username'
+            label='Username'
+            name='username'
+            autoComplete='username'
             autoFocus
           />
           <TextField
+            onChange={e => setPassword(e.target.value)}
+            value={password}
             variant='outlined'
             margin='normal'
             required
@@ -84,16 +128,19 @@ export default function SignIn (props) {
             id='password'
             autoComplete='current-password'
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            onClick={onClickHandler}
-          >
-            Login
-          </Button>
+          {loading ? (
+            <CircularProgress style={{ textAlign: 'center' }} />
+          ) : (
+            <Button
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              onClick={onClickHandler}
+            >
+              Login
+            </Button>
+          )}
         </form>
         <Grid item>
           <Typography variant='body2' color='textSecondary' align='center'>

@@ -4,18 +4,18 @@ import { Route, Redirect } from 'react-router-dom'
 
 import Cookies from 'js-cookie'
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
+const LoginRoute = ({ component: Component, ...rest }) => {
   const userToken = Cookies.get('userToken')
   return (
     <Route
       {...rest}
       render={props =>
-        userToken ? (
+        !userToken ? (
           <Component {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/',
               state: { from: props.location }
             }}
           />
@@ -25,4 +25,4 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   )
 }
 
-export default ProtectedRoute
+export default LoginRoute

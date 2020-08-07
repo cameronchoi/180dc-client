@@ -1,29 +1,18 @@
 import React from 'react'
-import {
-  ThemeProvider,
-  MuiThemeProvider,
-  createMuiTheme
-} from '@material-ui/core/styles'
-import { Grid, Paper, CssBaseline } from '@material-ui/core'
-
-import 'react-calendar/dist/Calendar.css'
-import Interviewee from './pages/Interviewee'
-import Interviewer from './pages/Interviewer'
-import Login from './pages/Login'
-import SignIn from './pages/Login'
-import NotFound from './pages/NotFound'
-import lightGreen from '@material-ui/core/colors/lightGreen'
-import purple from '@material-ui/core/colors/purple'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { Paper, CssBaseline } from '@material-ui/core'
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import ProtectedRoute from './components/ProtectedRoute'
-import StickyFooter from './pages/StickyFooter'
-import EnhancedTable from './EnhancedTable'
-import { InterviewProvider } from './contexts/InterviewContext'
-import SelectedTimesPage from './pages/Allocation'
-import Allocation from './pages/Allocation'
 
-// import SignIn from './pages/SignIn'
+import 'react-calendar/dist/Calendar.css'
+import SelectTimes from './pages/SelectTimes'
+import Login from './pages/Login'
+import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
+import Allocation from './pages/Allocation'
+import LoginRoute from './components/LoginRoute'
+import UserDetails from './pages/UserDetails'
+import { AuthProvider } from './contexts/AuthContext'
 
 function App () {
   const theme = createMuiTheme({
@@ -62,21 +51,17 @@ function App () {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Paper>
-        <Router>
-          <InterviewProvider>
+        <AuthProvider>
+          <Router>
             <Switch>
-              <Route path='/login' component={Login} />
-              <Route path='/interviewee' component={Interviewee} />
-              <Route path='/interviewer' component={Interviewer} />
-              <Route path='/allocation' component={Allocation} />
-              <Route path='/footer' component={StickyFooter} />
-
-              {/* <ProtectedRoute path='/interviewee' component={Interviewee} /> */}
-              {/* <ProtectedRoute path='/interviewer' component={Interviewer} /> */}
+              <LoginRoute path='/login' component={Login} />
+              <ProtectedRoute path='/allocation' component={Allocation} />
+              <ProtectedRoute exact path='/' component={UserDetails} />
+              <ProtectedRoute path='/times' component={SelectTimes} />
               <Route path='*' component={NotFound} />
             </Switch>
-          </InterviewProvider>
-        </Router>
+          </Router>
+        </AuthProvider>
       </Paper>
     </ThemeProvider>
   )
