@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Grid,
-  Paper,
-  Button,
-  Box
-} from '@material-ui/core'
+import { AppBar, Toolbar, Paper, Button, Box } from '@material-ui/core'
 
 import logo from '../assets/logo.svg'
 
@@ -33,13 +25,12 @@ const Header = ({ history }) => {
     })
   }
   return (
-    <Paper elevation={6}>
-      <AppBar position='static' color='primary'>
-        <Toolbar>
-          <Box className={classes.logoStyles}>
-            <img src={logo} alt='logo' style={{ height: 50 }} />
-          </Box>
-          {/* <Button
+    <AppBar position='static' color='primary'>
+      <Toolbar>
+        <Box className={classes.logoStyles}>
+          <img src={logo} alt='logo' style={{ height: 50 }} />
+        </Box>
+        {/* <Button
             className={classes.buttonStyles}
             variant='contained'
             color='primary'
@@ -48,18 +39,17 @@ const Header = ({ history }) => {
           >
             Logout
           </Button> */}
-          <Button
-            onClick={onClickHandler}
-            variant='contained'
-            color='secondary'
-            disableRipple={true}
-            disableElevation={true}
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </Paper>
+        <Button
+          onClick={onClickHandler}
+          variant='contained'
+          color='secondary'
+          disableRipple={true}
+          disableElevation={true}
+        >
+          Logout
+        </Button>
+      </Toolbar>
+    </AppBar>
   )
 }
 

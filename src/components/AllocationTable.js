@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   TableContainer,
   Table,
@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
+import { InterviewContext } from '../contexts/InterviewContext'
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const InterviewTimes = ({ times, handleClick }) => {
+const AllocationTable = ({ allocations }) => {
   const classes = useStyles()
 
   const createTimeString = hour => {
@@ -42,33 +43,34 @@ const InterviewTimes = ({ times, handleClick }) => {
     return `${hour - 12}:00 PM`
   }
 
+  const convertToDateObj = string => {
+    return new Date(string.substring(0, string.length - 1))
+  }
+
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
       <Table className={classes.table} stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell></TableCell>
-            <TableCell align='center'>Date</TableCell>
-            <TableCell align='center'>Time</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>Room</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {times.map(time => {
+          {allocations.map(allocation => {
+            console.log(allocation)
             return (
-              <TableRow
-                key={time.id}
-                hover
-                onClick={() => {
-                  handleClick(time.index)
-                }}
-              >
+              <TableRow>
                 <TableCell>
-                  <Checkbox checked={time.selected} />
+                  {convertToDateObj(allocation.interviewTime).toDateString()}
                 </TableCell>
-                <TableCell align='center'>{time.date.toDateString()}</TableCell>
-                <TableCell align='center'>
-                  {createTimeString(time.date.getHours())}
+                <TableCell>
+                  {createTimeString(
+                    convertToDateObj(allocation.interviewTime).getHours()
+                  )}
                 </TableCell>
+                <TableCell>{allocation.interviewRoom}</TableCell>
               </TableRow>
             )
           })}
@@ -78,4 +80,4 @@ const InterviewTimes = ({ times, handleClick }) => {
   )
 }
 
-export default InterviewTimes
+export default AllocationTable

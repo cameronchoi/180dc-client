@@ -10,7 +10,6 @@
 @media only screen and (max-width: 600px) {
   .react-calendar {
     width: 300px;
-    margin-bottom: 30px;
   }
   .react-calendar__tile {
     height: 30px;

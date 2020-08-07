@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid, Typography, Button, Paper } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,6 +9,7 @@ import Calendar from 'react-calendar'
 import InterviewTimes from '../components/InterviewTimes'
 import Footer from '../components/Footer'
 import './calendar.css'
+import { InterviewContext } from '../contexts/InterviewContext'
 
 const useStyles = makeStyles(theme => ({
   center: {
@@ -36,6 +37,8 @@ const useStyles = makeStyles(theme => ({
 
 const Interviewee = props => {
   const classes = useStyles()
+  const [interviewState, interviewDispatch] = useContext(InterviewContext)
+
   const [availableTimes, setAvailableTimes] = useState([])
   const [dayTimes, setDayTimes] = useState([])
   const [date, setDate] = useState()
@@ -48,6 +51,44 @@ const Interviewee = props => {
       isSameDay(time.date, nextDate)
     )
     setDayTimes(currentDayTimes)
+  }
+
+  const submitHandler = () => {
+    let sendTimes = []
+    availableTimes.forEach(time => {
+      if (time.selected) {
+        sendTimes.push(time.dateTime)
+      }
+    })
+    if (sendTimes.length < 2 && availableTimes.length > 1) {
+      return alert('Please select at least two times')
+    } else {
+      fetch('http://127.0.0.1:8000/api/intervieweetimes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          availableTimes: sendTimes
+        })
+      })
+        .then(res => res.json())
+        .then(resData => {
+          if (resData.errors) {
+            alert(
+              'Something went wrong... Please refresh your page and try again'
+            )
+          } else {
+            console.log(resData)
+            interviewDispatch({ type: 'SUBMIT_TIME', time: [resData] })
+            props.history.push('/allocation')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          alert('something went wrong...')
+        })
+    }
   }
 
   function isSameDay (a, b) {
@@ -142,42 +183,14 @@ const Interviewee = props => {
           </Grid>
           <Grid item xs={12} className={classes.center}>
             <Button
-              onClick={() => {
-                let sendTimes = []
-                availableTimes.forEach(time => {
-                  if (time.selected) {
-                    sendTimes.push(time.dateTime)
-                  }
-                })
-                if (sendTimes.length < 2 && availableTimes.length > 1) {
-                  return alert('Please select at least two times')
-                } else {
-                  fetch('http://127.0.0.1:8000/api/intervieweetimes', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      availableTimes: sendTimes
-                    })
-                  })
-                    .then(res => res.json())
-                    .then(resData => {
-                      console.log(resData)
-                    })
-                    .catch(err => {
-                      console('hellloooooooo')
-                      alert('something went wrong...')
-                    })
-                }
-              }}
+              onClick={submitHandler}
               variant='contained'
               color='primary'
               fullWidth
               className={classes.submitButton}
               size='large'
             >
-              Submit times
+              Submit Times
             </Button>
           </Grid>
         </Grid>
