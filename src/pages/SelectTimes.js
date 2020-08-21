@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100vh'
   },
   table: {
-    marginBottom: 15
+    marginBottom: 10
   }
 }))
 
