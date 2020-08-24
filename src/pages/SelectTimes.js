@@ -38,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
+  issueText: {
+    textAlign: "center",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
   root: {
     overflowX: "hidden",
     minHeight: "100vh",
@@ -71,6 +77,7 @@ const SelectTimes = (props) => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const onChangeHandler = (nextDate) => {
@@ -128,8 +135,8 @@ const SelectTimes = (props) => {
         sendTimes.push(time.dateTime);
       }
     });
-    if (sendTimes.length < 2 && availableTimes.length > 1) {
-      return alert("Please select at least two times");
+    if (sendTimes.length < 1) {
+      return alert("Please select at one time");
     } else {
       positionPostTimes(position, sendTimes);
     }
@@ -152,6 +159,7 @@ const SelectTimes = (props) => {
   }
 
   const positionGetTimes = (position) => {
+    setFetchLoading(true);
     fetch(`http://127.0.0.1:8000/api/${position}times`, {
       headers: {
         Authorization: `Token ${userToken}`,
@@ -159,6 +167,10 @@ const SelectTimes = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
+        if (resData.length === 0) {
+          setFetchLoading(false);
+          return;
+        }
         let times = [];
         resData.forEach((time, i) => {
           times.push({
@@ -179,9 +191,11 @@ const SelectTimes = (props) => {
           isSameDay(time.date, times[0].date)
         );
         setDayTimes(currentDayTimes);
+        setFetchLoading(false);
       })
       .catch((err) => {
         alert("Unable to fetch data...");
+        setFetchLoading(false);
       });
   };
 
@@ -195,7 +209,7 @@ const SelectTimes = (props) => {
     setAvailableTimes(newTimes);
   };
 
-  const body = (
+  const modalBody = (
     <Grid
       container
       align="center"
@@ -218,6 +232,63 @@ const SelectTimes = (props) => {
     </Grid>
   );
 
+  let mainContent;
+
+  if (fetchLoading) {
+    mainContent = (
+      <Grid item>
+        <CircularProgress />
+      </Grid>
+    );
+  } else {
+    if (availableTimes.length === 0) {
+      mainContent = (
+        <Grid item>
+          <Typography className={classes.text}>
+            There are no times left. If you have not been allocated an interview
+            yet please contact sydney@180dc.org
+          </Typography>
+        </Grid>
+      );
+    } else {
+      mainContent = (
+        <>
+          <Grid item xs={12} className={classes.text}>
+            <Typography variant="body1">
+              1. Click a day on the calendar to display all the available times
+              during that day.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} className={classes.text}>
+            <Typography variant="body1">
+              2. Click on all your available times during that specific day.
+            </Typography>
+          </Grid>
+          <Grid item container justify="center" alignItems="center">
+            <Grid item container md={12} lg={5} justify="center">
+              <Grid item>
+                <Paper elevation={3}>
+                  <Calendar
+                    onChange={onChangeHandler}
+                    value={date}
+                    minDate={startDate}
+                    maxDate={endDate}
+                    tileDisabled={tileDisabled}
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+            <Grid item container md={12} lg={5} justify="center">
+              <Grid item className={classes.table}>
+                <InterviewTimes times={dayTimes} handleClick={handleClick} />
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      );
+    }
+  }
+
   return (
     <Grid
       container
@@ -225,7 +296,7 @@ const SelectTimes = (props) => {
       direction="column"
       justify="space-between"
     >
-      <Modal open={openModal}>{body}</Modal>
+      <Modal open={openModal}>{modalBody}</Modal>
       <Grid item>
         <Header history={props.history} />
       </Grid>
@@ -233,37 +304,7 @@ const SelectTimes = (props) => {
         <Grid item xs={12} className={classes.title}>
           <Typography variant="h4">Enter your available times</Typography>
         </Grid>
-        <Grid item xs={12} className={classes.text}>
-          <Typography variant="body1">
-            1. Click a day on the calendar to display all the available times
-            during that day.
-          </Typography>
-        </Grid>
-        <Grid item xs={12} className={classes.text}>
-          <Typography variant="body1">
-            2. Click on all your available times during that specific day.
-          </Typography>
-        </Grid>
-        <Grid item container justify="center" alignItems="center">
-          <Grid item container md={12} lg={5} justify="center">
-            <Grid item>
-              <Paper elevation={3}>
-                <Calendar
-                  onChange={onChangeHandler}
-                  value={date}
-                  minDate={startDate}
-                  maxDate={endDate}
-                  tileDisabled={tileDisabled}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
-          <Grid item container md={12} lg={5} justify="center">
-            <Grid item className={classes.table}>
-              <InterviewTimes times={dayTimes} handleClick={handleClick} />
-            </Grid>
-          </Grid>
-        </Grid>
+        {mainContent}
         <Grid item xs={12} className={classes.buttonContainer}>
           {loading ? (
             <CircularProgress />
@@ -275,11 +316,17 @@ const SelectTimes = (props) => {
               fullWidth
               className={classes.submitButton}
               size="large"
+              disabled={!availableTimes.length}
             >
               Submit Times
             </Button>
           )}
         </Grid>
+      </Grid>
+      <Grid item xs={12} justify="center">
+        <Typography variant="body2" className={classes.issueText}>
+          If you encounter any major issues please contact sydney@180dc.org
+        </Typography>
       </Grid>
       <Grid item>
         <Footer />

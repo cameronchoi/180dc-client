@@ -14,12 +14,19 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
   },
+  issueText: {
+    textAlign: "center",
+    marginLeft: 20,
+    marginRight: 20,
+  },
   table: {
-    marginBottom: 30,
+    marginBottom: theme.spacing(4),
   },
   submitButton: {
     width: 240,
-    margin: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   smallText: {
     textAlign: "center",
@@ -53,7 +60,7 @@ const Allocation = (props) => {
     table = (
       <Typography className={classes.smallText}>
         You have not been allocated an interview yet. If you think this is wrong
-        please contact 180@email.com
+        please contact sydney@180dc.org
       </Typography>
     );
   }
@@ -101,6 +108,11 @@ const Allocation = (props) => {
           <Grid item className={classes.table}>
             {table}
           </Grid>
+        </Grid>
+        <Grid item xs={12} justify="center" className={classes.table}>
+          <Typography variant="body2" className={classes.issueText}>
+            If you encounter any major issues please contact sydney@180dc.org
+          </Typography>
         </Grid>
         <Grid item container xs={12} justify="center">
           <Grid item>

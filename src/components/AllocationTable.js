@@ -6,8 +6,8 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Checkbox,
   Paper,
+  Link,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   table: {
     width: 300,
     [theme.breakpoints.up("sm")]: {
-      width: 700,
+      width: 580,
     },
   },
   tableContainer: {
@@ -53,9 +53,9 @@ const AllocationTable = ({ allocations }) => {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Time</TableCell>
-            <TableCell>Room</TableCell>
-            <TableCell>Interviewees</TableCell>
-            <TableCell>Interviewers</TableCell>
+            <TableCell>Zoom Link</TableCell>
+            {/* <TableCell>Interviewees</TableCell>
+            <TableCell>Interviewers</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,13 +75,21 @@ const AllocationTable = ({ allocations }) => {
                     convertToDateObj(allocation.datetime).getHours()
                   )}
                 </TableCell>
-                <TableCell>{roomText}</TableCell>
                 <TableCell>
+                  <Link
+                    href="https://uni-sydney.zoom.us/j/7240988390"
+                    target="_blank"
+                  >
+                    Click to go to link
+                  </Link>
+                </TableCell>
+                {/* <TableCell>{roomText}</TableCell> */}
+                {/* <TableCell>
                   {allocation.interviewees.length
                     ? allocation.interviewees.join(", ")
                     : "None"}
                 </TableCell>
-                <TableCell>{allocation.interviewers.join(", ")}</TableCell>
+                <TableCell>{allocation.interviewers.join(", ")}</TableCell> */}
               </TableRow>
             );
           })}

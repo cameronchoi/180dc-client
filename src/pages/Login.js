@@ -55,7 +55,7 @@ export default function Login(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username: username.toLowerCase(), password }),
     })
       .then((res) => res.json())
       .then((resData) => {
@@ -72,6 +72,7 @@ export default function Login(props) {
 
           Cookies.set("userToken", resData.token);
           Cookies.set("position", resData.position);
+          Cookies.set("admin", resData.is_staff);
           setLoading(false);
           props.history.push("/");
         }
@@ -111,7 +112,7 @@ export default function Login(props) {
             required
             fullWidth
             id="username"
-            label="Username"
+            label="Email Address"
             name="username"
             autoComplete="username"
             autoFocus

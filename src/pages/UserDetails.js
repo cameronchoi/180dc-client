@@ -14,6 +14,13 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
   },
+  welcome: {
+    fontSize: 24,
+    marginBottom: 30,
+    [theme.breakpoints.up("sm")]: {
+      fontSize: 30,
+    },
+  },
   table: {
     marginBottom: 30,
   },
@@ -164,7 +171,7 @@ const UserDetails = (props) => {
       </Grid>
       <Grid item container alignItems="center" className={classes.userContent}>
         <Grid item xs={12} className={classes.center}>
-          <Typography variant="h4" className={classes.table}>
+          <Typography variant="h4" className={classes.welcome}>
             {`Welcome, ${firstName} ${lastName}`}
           </Typography>
         </Grid>
