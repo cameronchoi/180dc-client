@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     marginBottom: theme.spacing(4),
+    margin: "auto",
   },
   submitButton: {
     width: 240,
@@ -104,12 +105,10 @@ const Allocation = (props) => {
             Interview Allocation
           </Typography>
         </Grid>
-        <Grid item xs={12} container justify="center">
-          <Grid item className={classes.table}>
-            {table}
-          </Grid>
+        <Grid item xs={10} className={classes.table}>
+          {table}
         </Grid>
-        <Grid item xs={12} justify="center" className={classes.table}>
+        <Grid item xs={12} className={classes.table}>
           <Typography variant="body2" className={classes.issueText}>
             If you encounter any major issues please contact sydney@180dc.org
           </Typography>
@@ -125,7 +124,7 @@ const Allocation = (props) => {
                 className={classes.submitButton}
                 size="large"
               >
-                Go Back Home
+                Go back home
               </Button>
             </Link>
           </Grid>
@@ -139,8 +138,8 @@ const Allocation = (props) => {
               size="large"
             >
               {interviewAllocations.length
-                ? "Redo Time Selection"
-                : "Select Interview Times"}
+                ? "Redo time selection"
+                : "Select interview times"}
             </Button>
           </Grid>
         </Grid>

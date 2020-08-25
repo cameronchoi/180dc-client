@@ -136,7 +136,7 @@ const SelectTimes = (props) => {
       }
     });
     if (sendTimes.length < 1) {
-      return alert("Please select at one time");
+      return alert("Please select at least one time");
     } else {
       positionPostTimes(position, sendTimes);
     }
@@ -261,13 +261,13 @@ const SelectTimes = (props) => {
           </Grid>
           <Grid item xs={12} className={classes.text}>
             <Typography variant="body1">
-              2. Click on all your available times during that specific day.
+              2. Click on all your available times during that calendar day.
             </Typography>
           </Grid>
           <Grid item container justify="center" alignItems="center">
             <Grid item container md={12} lg={5} justify="center">
               <Grid item>
-                <Paper elevation={3}>
+                <Paper>
                   <Calendar
                     onChange={onChangeHandler}
                     value={date}
@@ -318,7 +318,7 @@ const SelectTimes = (props) => {
               size="large"
               disabled={!availableTimes.length}
             >
-              Submit Times
+              Submit times
             </Button>
           )}
         </Grid>

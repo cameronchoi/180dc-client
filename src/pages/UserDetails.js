@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   welcome: {
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 30,
     [theme.breakpoints.up("sm")]: {
       fontSize: 30,
     },
   },
-  table: {
+  userInfo: {
     marginBottom: 30,
   },
   submitButton: {
@@ -78,7 +78,7 @@ const UserDetails = (props) => {
             className={classes.submitButton}
             size="large"
           >
-            View Interview Allocation
+            View interview allocation
           </Button>
         </Link>
       );
@@ -92,7 +92,7 @@ const UserDetails = (props) => {
             className={classes.submitButton}
             size="large"
           >
-            Select Interview Times
+            Select interview times
           </Button>
         </Link>
       );
@@ -176,7 +176,7 @@ const UserDetails = (props) => {
           </Typography>
         </Grid>
         <Grid item xs={12} container justify="center">
-          <Grid item className={classes.table}>
+          <Grid item className={classes.userInfo}>
             <UserCard
               email={email}
               degrees={degrees}

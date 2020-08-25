@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Container } from "@material-ui/core";
+import { Container, Grid, CardActionArea } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,13 +11,33 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: 450,
     },
-    textAlign: "center",
   },
   title: {
     fontSize: 14,
   },
   textContainer: {
     marginBottom: 10,
+  },
+  infoTitle: {
+    width: 300,
+    [theme.breakpoints.up("sm")]: {
+      width: 100,
+    },
+  },
+  infoContainer: {
+    padding: 15,
+    [theme.breakpoints.up("sm")]: {
+      padding: 20,
+    },
+    borderBottom: 1,
+    borderBottomColor: "#eaeaea",
+    borderBottomStyle: "solid",
+  },
+  hoverClass: {
+    padding: 15,
+    [theme.breakpoints.up("sm")]: {
+      padding: 20,
+    },
   },
 }));
 
@@ -29,62 +49,58 @@ export default function UserCard({
   position,
 }) {
   const classes = useStyles();
-
-  let degreeText = degrees[0];
-  let majorText = majors[0];
-
-  if (degrees.length > 1) {
-    degreeText = `${degreeText}, ${degrees[1]}`;
-  }
-
-  if (majors.length > 1) {
-    majorText = `${majorText}, ${majors[1]}`;
-  }
-
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Container className={classes.textContainer}>
-          <Typography gutterBottom variant="h6">
+    <Card className={classes.root} variant="outlined">
+      <Grid container className={classes.infoContainer}>
+        <Grid item className={classes.infoTitle}>
+          <Typography gutterBottom variant="subtitle1">
             Position
           </Typography>
-          <Typography color="textSecondary" variant="h6" component="h2">
+        </Grid>
+        <Grid item>
+          <Typography variant="subtitle1" color="textSecondary">
             {position.charAt(0).toUpperCase() + position.slice(1)}
           </Typography>
-        </Container>
-        <Container className={classes.textContainer}>
-          <Typography gutterBottom variant="h6">
+        </Grid>
+      </Grid>
+      <Grid container className={classes.infoContainer}>
+        <Grid item className={classes.infoTitle}>
+          <Typography gutterBottom variant="subtitle1">
             Email
           </Typography>
-          <Typography color="textSecondary" variant="h6" component="h2">
+        </Grid>
+        <Grid item>
+          <Typography color="textSecondary" variant="subtitle1">
             {email}
           </Typography>
-        </Container>
-        {/* <Container className={classes.textContainer}>
-          <Typography gutterBottom variant="h6">
-            Degree(s)
-          </Typography>
-          <Typography color="textSecondary" variant="h6" component="h2">
-            {degreeText}
-          </Typography>
-        </Container>
-        <Container className={classes.textContainer}>
-          <Typography gutterBottom variant="h6">
-            Major(s)
-          </Typography>
-          <Typography color="textSecondary" variant="h6" component="h2">
-            {majorText}
-          </Typography>
-        </Container> */}
-        <Container className={classes.textContainer}>
-          <Typography gutterBottom variant="h6">
+        </Grid>
+      </Grid>
+      <Grid container className={classes.infoContainer}>
+        <Grid item className={classes.infoTitle}>
+          <Typography gutterBottom variant="subtitle1">
             Stream
           </Typography>
-          <Typography color="textSecondary" variant="h6" component="h2">
+        </Grid>
+        <Grid item>
+          <Typography color="textSecondary" variant="subtitle1">
             {digitalImpact ? "Digital Impact" : "Strategy"}
           </Typography>
-        </Container>
-      </CardContent>
+        </Grid>
+      </Grid>
+      <CardActionArea>
+        <Grid container className={classes.hoverClass}>
+          <Grid item className={classes.infoTitle}>
+            <Typography gutterBottom variant="subtitle1">
+              Password
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography color="textSecondary" variant="subtitle1">
+              ••••••••••
+            </Typography>
+          </Grid>
+        </Grid>
+      </CardActionArea>
     </Card>
   );
 }

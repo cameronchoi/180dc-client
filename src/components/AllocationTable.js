@@ -8,15 +8,16 @@ import {
   TableCell,
   Paper,
   Link,
+  Typography,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    width: 300,
+    minWidth: 1200,
     [theme.breakpoints.up("sm")]: {
-      width: 580,
+      minWidth: 900,
     },
   },
   tableContainer: {
@@ -25,6 +26,18 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       maxHeight: 450,
     },
+    borderTopWidth: 1,
+    borderTopColor: "#EAEAEA",
+    borderTopStyle: "solid",
+    borderRightWidth: 1,
+    borderRightColor: "#EAEAEA",
+    borderRightStyle: "solid",
+    borderLeftWidth: 1,
+    borderLeftColor: "#EAEAEA",
+    borderLeftStyle: "solid",
+  },
+  zoomLink: {
+    maxWidth: 300,
   },
 }));
 
@@ -53,18 +66,13 @@ const AllocationTable = ({ allocations }) => {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Time</TableCell>
+            <TableCell>Interviewee(s)</TableCell>
+            <TableCell>Interviewers</TableCell>
             <TableCell>Zoom Link</TableCell>
-            {/* <TableCell>Interviewees</TableCell>
-            <TableCell>Interviewers</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {allocations.map((allocation) => {
-            let roomText = allocation.room;
-
-            if (allocation.room === null) {
-              roomText = "No Room Yet";
-            }
             return (
               <TableRow key={allocation.datetime}>
                 <TableCell>
@@ -76,20 +84,22 @@ const AllocationTable = ({ allocations }) => {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Link
-                    href="https://uni-sydney.zoom.us/j/7240988390"
-                    target="_blank"
-                  >
-                    Click to go to link
-                  </Link>
-                </TableCell>
-                {/* <TableCell>{roomText}</TableCell> */}
-                {/* <TableCell>
                   {allocation.interviewees.length
                     ? allocation.interviewees.join(", ")
-                    : "None"}
+                    : "None allocated yet"}
                 </TableCell>
-                <TableCell>{allocation.interviewers.join(", ")}</TableCell> */}
+                <TableCell>{allocation.interviewers.join(", ")}</TableCell>
+                <TableCell className={classes.zoomLink}>
+                  {allocation.room ? (
+                    <Link href={`${allocation.room}`} target="_blank">
+                      <Typography noWrap={true} variant="body2">
+                        {`${allocation.room}`}
+                      </Typography>
+                    </Link>
+                  ) : (
+                    "Zoom link has not been setup yet"
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}

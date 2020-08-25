@@ -128,7 +128,7 @@ const Interviewer = props => {
         <Grid item container justify='center' alignItems='center'>
           <Grid item container md={12} lg={5} justify='center'>
             <Grid item>
-              <Paper elevation={3}>
+              <Paper>
                 <Calendar
                   onChange={onChangeHandler}
                   value={date}

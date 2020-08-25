@@ -1,6 +1,7 @@
 .react-calendar {
   width: 590px;
   margin-bottom: 10px;
+  border-color: #eaeaea;
 }
 
 .react-calendar__tile {
