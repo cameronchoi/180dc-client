@@ -38,7 +38,6 @@ const Header = ({ history }) => {
           variant="contained"
           color="primary"
           disableRipple={true}
-          disableElevation={true}
         >
           Logout
         </Button>

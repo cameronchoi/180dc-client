@@ -15,9 +15,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: 1200,
+    minWidth: 900,
     [theme.breakpoints.up("sm")]: {
-      minWidth: 900,
+      minWidth: 1200,
     },
   },
   tableContainer: {

@@ -52,15 +52,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
   },
   paper: {
-    position: "absolute",
     width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    textAlign: "center",
+    padding: theme.spacing(3),
+    margin: 10,
   },
-  modalRoot: {
-    width: "100%",
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 
@@ -117,8 +117,7 @@ const SelectTimes = (props) => {
         } else {
           console.log(resData);
           setLoading(false);
-          //   setOpenModal(true);
-          props.history.push("/allocation");
+          setOpenModal(true);
         }
       })
       .catch((err) => {
@@ -140,6 +139,10 @@ const SelectTimes = (props) => {
     } else {
       positionPostTimes(position, sendTimes);
     }
+  };
+
+  const modalButtonHandler = () => {
+    props.history.push("/allocation");
   };
 
   function isSameDay(a, b) {
@@ -209,29 +212,6 @@ const SelectTimes = (props) => {
     setAvailableTimes(newTimes);
   };
 
-  const modalBody = (
-    <Grid
-      container
-      align="center"
-      justify="center"
-      className={classes.modalRoot}
-    >
-      <Grid item>
-        <Paper className={classes.paper}>
-          <Typography variant="h6" id="simple-modal-title">
-            Congratulations!
-          </Typography>
-          <Typography variant="body1" id="simple-modal-description">
-            You have successfully submitted your times.
-          </Typography>
-          <Button variant="contained" color="primary">
-            View Interview Allocation
-          </Button>
-        </Paper>
-      </Grid>
-    </Grid>
-  );
-
   let mainContent;
 
   if (fetchLoading) {
@@ -296,7 +276,32 @@ const SelectTimes = (props) => {
       direction="column"
       justify="space-between"
     >
-      <Modal open={openModal}>{modalBody}</Modal>
+      <Modal open={openModal} className={classes.modal}>
+        <Paper className={classes.paper}>
+          <Grid container direction="column" spacing={3}>
+            <Grid item>
+              <Typography variant="h6" id="simple-modal-title">
+                Congratulations!
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" id="simple-modal-description">
+                You have successfully submitted your times.
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={modalButtonHandler}
+              >
+                View Interview Allocation
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Modal>
+
       <Grid item>
         <Header history={props.history} />
       </Grid>

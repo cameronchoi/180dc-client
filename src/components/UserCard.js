@@ -5,6 +5,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Container, Grid, CardActionArea } from "@material-ui/core";
 
+import { Link } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
@@ -88,18 +90,20 @@ export default function UserCard({
         </Grid>
       </Grid>
       <CardActionArea>
-        <Grid container className={classes.hoverClass}>
-          <Grid item className={classes.infoTitle}>
-            <Typography gutterBottom variant="subtitle1">
-              Password
-            </Typography>
+        <Link to="/changepassword" style={{ textDecoration: "none" }}>
+          <Grid container className={classes.hoverClass}>
+            <Grid item className={classes.infoTitle}>
+              <Typography gutterBottom variant="subtitle1">
+                Password
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography color="textSecondary" variant="subtitle1">
+                ••••••••••
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography color="textSecondary" variant="subtitle1">
-              ••••••••••
-            </Typography>
-          </Grid>
-        </Grid>
+        </Link>
       </CardActionArea>
     </Card>
   );

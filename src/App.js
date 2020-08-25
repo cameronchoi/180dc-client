@@ -12,6 +12,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Allocation from "./pages/Allocation";
 import LoginRoute from "./components/LoginRoute";
 import UserDetails from "./pages/UserDetails";
+
+import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -63,6 +65,10 @@ function App() {
               <ProtectedRoute path="/allocation" component={Allocation} />
               <ProtectedRoute exact path="/" component={UserDetails} />
               <ProtectedRoute path="/times" component={SelectTimes} />
+              <ProtectedRoute
+                path="/changepassword"
+                component={ChangePassword}
+              />
               <Route path="*" component={NotFound} />
             </Switch>
           </Router>
