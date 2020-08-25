@@ -16,9 +16,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 900,
-    [theme.breakpoints.up("sm")]: {
-      minWidth: 1200,
-    },
   },
   tableContainer: {
     maxHeight: 300,
@@ -37,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     borderLeftStyle: "solid",
   },
   zoomLink: {
-    maxWidth: 300,
+    maxWidth: 250,
   },
 }));
 

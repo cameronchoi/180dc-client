@@ -9,8 +9,9 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
+import useInterval from "../hooks/useInterval";
 
-import { differenceInCalendarDays } from "date-fns";
+import { differenceInCalendarDays, isBefore, isAfter, isEqual } from "date-fns";
 import Header from "../components/Header";
 import Calendar from "react-calendar";
 import InterviewTimes from "../components/InterviewTimes";
@@ -36,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
-    marginTop: theme.spacing(2),
+    marginTop: 20,
+    fontSize: 22,
+
+    [theme.breakpoints.up("sm")]: {
+      fontSize: 30,
+    },
   },
   issueText: {
     textAlign: "center",
@@ -77,7 +83,6 @@ const SelectTimes = (props) => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [loading, setLoading] = useState(false);
-  const [fetchLoading, setFetchLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const onChangeHandler = (nextDate) => {
@@ -162,7 +167,6 @@ const SelectTimes = (props) => {
   }
 
   const positionGetTimes = (position) => {
-    setFetchLoading(true);
     fetch(`http://127.0.0.1:8000/api/${position}times`, {
       headers: {
         Authorization: `Token ${userToken}`,
@@ -171,10 +175,15 @@ const SelectTimes = (props) => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData.length === 0) {
-          setFetchLoading(false);
+          alert(
+            "No times left. If you have not been allocated an interview yet please contact sydney@180dc.org"
+          );
+          props.history.push("/");
           return;
         }
         let times = [];
+        console.log("-----------------");
+        console.log(times);
         resData.forEach((time, i) => {
           times.push({
             id: time.id,
@@ -186,88 +195,77 @@ const SelectTimes = (props) => {
             index: i,
           });
         });
-        setAvailableTimes(times);
-        setDate(times[0].date);
-        setStartDate(times[0].date);
-        setEndDate(times[times.length - 1].date);
-        let currentDayTimes = times.filter((time) =>
-          isSameDay(time.date, times[0].date)
-        );
-        setDayTimes(currentDayTimes);
-        setFetchLoading(false);
+        refreshTimes(times);
       })
       .catch((err) => {
         alert("Unable to fetch data...");
-        setFetchLoading(false);
       });
+  };
+
+  const refreshTimes = (times) => {
+    console.log("refreshed");
+    availableTimes.forEach((prevTime) => {
+      for (let i = 0; i < times.length; i++) {
+        if (times[i].id === prevTime.id) {
+          times[i].selected = prevTime.selected;
+          break;
+        }
+      }
+    });
+    setAvailableTimes(times);
+
+    if (date === undefined) {
+      setDate(times[0].date);
+      setStartDate(times[0].date);
+      setEndDate(times[times.length - 1].date);
+      let currentDayTimes = times.filter((time) =>
+        isSameDay(time.date, times[0].date)
+      );
+      setDayTimes(currentDayTimes);
+    } else {
+      let currentDayTimes = times.filter((time) => isSameDay(time.date, date));
+      if (!isEqual(times[0].date, startDate)) {
+        setStartDate(times[0].date);
+        if (isBefore(date, times[0].date)) {
+          setDate(times[0].date);
+          currentDayTimes = times.filter((time) =>
+            isSameDay(time.date, times[0].date)
+          );
+        }
+      }
+
+      if (!isEqual(times[times.length - 1].date, endDate)) {
+        setEndDate(times[times.length - 1].date);
+        if (isAfter(date, times[times.length - 1].date)) {
+          setDate(times[times.length - 1].date);
+          currentDayTimes = times.filter((time) =>
+            isSameDay(time.date, times[times.length - 1].date)
+          );
+        }
+      }
+      setDayTimes(currentDayTimes);
+    }
   };
 
   useEffect(() => {
     positionGetTimes(position);
+    setTimeout(() => {
+      alert(
+        "You have exceeded 5 minutes for selecting times. Please try again."
+      );
+      props.history.push("/");
+    }, 300000);
   }, []);
+
+  useInterval(() => {
+    positionGetTimes(position);
+  }, 5000);
 
   const handleClick = (index) => {
     let newTimes = [...availableTimes];
     newTimes[index].selected = !newTimes[index].selected;
     setAvailableTimes(newTimes);
   };
-
-  let mainContent;
-
-  if (fetchLoading) {
-    mainContent = (
-      <Grid item>
-        <CircularProgress />
-      </Grid>
-    );
-  } else {
-    if (availableTimes.length === 0) {
-      mainContent = (
-        <Grid item>
-          <Typography className={classes.text}>
-            There are no times left. If you have not been allocated an interview
-            yet please contact sydney@180dc.org
-          </Typography>
-        </Grid>
-      );
-    } else {
-      mainContent = (
-        <>
-          <Grid item xs={12} className={classes.text}>
-            <Typography variant="body1">
-              1. Click a day on the calendar to display all the available times
-              during that day.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} className={classes.text}>
-            <Typography variant="body1">
-              2. Click on all your available times during that calendar day.
-            </Typography>
-          </Grid>
-          <Grid item container justify="center" alignItems="center">
-            <Grid item container md={12} lg={5} justify="center">
-              <Grid item>
-                <Paper>
-                  <Calendar
-                    onChange={onChangeHandler}
-                    value={date}
-                    minDate={startDate}
-                    maxDate={endDate}
-                    tileDisabled={tileDisabled}
-                  />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Grid item container md={12} lg={5} justify="center">
-              <Grid item className={classes.table}>
-                <InterviewTimes times={dayTimes} handleClick={handleClick} />
-              </Grid>
-            </Grid>
-          </Grid>
-        </>
-      );
-    }
-  }
 
   return (
     <Grid
@@ -306,10 +304,42 @@ const SelectTimes = (props) => {
         <Header history={props.history} />
       </Grid>
       <Grid item container alignItems="center" direction="column" spacing={3}>
-        <Grid item xs={12} className={classes.title}>
-          <Typography variant="h4">Enter your available times</Typography>
+        <Grid item xs={12}>
+          <Typography variant="h4" className={classes.title}>
+            Enter your available times
+          </Typography>
         </Grid>
-        {mainContent}
+        <Grid item xs={12} className={classes.text}>
+          <Typography variant="body1">
+            1. Click a day on the calendar to display all the available times
+            during that day.
+          </Typography>
+        </Grid>
+        <Grid item xs={12} className={classes.text}>
+          <Typography variant="body1">
+            2. Click on all your available times during that calendar day.
+          </Typography>
+        </Grid>
+        <Grid item container justify="center" alignItems="center">
+          <Grid item container md={12} lg={5} justify="center">
+            <Grid item>
+              <Paper>
+                <Calendar
+                  onChange={onChangeHandler}
+                  value={date}
+                  minDate={startDate}
+                  maxDate={endDate}
+                  tileDisabled={tileDisabled}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
+          <Grid item container md={12} lg={5} justify="center">
+            <Grid item className={classes.table}>
+              <InterviewTimes times={dayTimes} handleClick={handleClick} />
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid item xs={12} className={classes.buttonContainer}>
           {loading ? (
             <CircularProgress />

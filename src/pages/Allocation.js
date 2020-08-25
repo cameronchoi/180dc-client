@@ -105,7 +105,7 @@ const Allocation = (props) => {
             Interview Allocation
           </Typography>
         </Grid>
-        <Grid item xs={10} className={classes.table}>
+        <Grid item xs={10} lg={8} className={classes.table}>
           {table}
         </Grid>
         <Grid item xs={12} className={classes.table}>

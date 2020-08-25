@@ -8,11 +8,14 @@ import {
   Paper,
 } from "@material-ui/core";
 
+import { Link } from "react-router-dom";
+
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import Cookies from "js-cookie";
 
@@ -59,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
   title: {
-    marginTop: 20,
+    marginTop: 25,
   },
   paper: {
     width: 400,
@@ -71,6 +74,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  backIcon: {
+    position: "absolute",
+    left: 25,
+    top: 100,
+    fontSize: 40,
   },
 }));
 
@@ -177,6 +186,9 @@ const ChangePassword = (props) => {
       <Grid item>
         <Header history={props.history} />
       </Grid>
+      <Link to="/" className={classes.backIcon}>
+        <ArrowBackIcon fontSize="large" />
+      </Link>
       <Grid container direction="column" alignItems="center" justify="center">
         <Grid item className={classes.title}>
           <Typography component="h1" variant="h5">
