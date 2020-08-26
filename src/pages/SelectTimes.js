@@ -114,9 +114,7 @@ const SelectTimes = (props) => {
             setLoading(false);
             props.history.push("/");
           } else {
-            alert(
-              `${resData.errors}: Something went wrong... Please refresh your page and try again`
-            );
+            alert(`${resData.errors}: Please refresh your page and try again`);
           }
           setLoading(false);
         } else {
@@ -182,8 +180,6 @@ const SelectTimes = (props) => {
           return;
         }
         let times = [];
-        console.log("-----------------");
-        console.log(times);
         resData.forEach((time, i) => {
           times.push({
             id: time.id,
@@ -199,6 +195,7 @@ const SelectTimes = (props) => {
       })
       .catch((err) => {
         alert("Unable to fetch data...");
+        props.history.push("/");
       });
   };
 
@@ -249,12 +246,16 @@ const SelectTimes = (props) => {
 
   useEffect(() => {
     positionGetTimes(position);
-    setTimeout(() => {
+    const timeoutID = setTimeout(() => {
       alert(
-        "You have exceeded 5 minutes for selecting times. Please try again."
+        "You have exceeded 10 minutes for selecting times. Please try again."
       );
       props.history.push("/");
-    }, 300000);
+    }, 600000);
+
+    return () => {
+      clearTimeout(timeoutID);
+    };
   }, []);
 
   useInterval(() => {
