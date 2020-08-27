@@ -67,11 +67,14 @@ const Allocation = (props) => {
   }
 
   useEffect(() => {
-    fetch("http://admin.180dcusyd.org/api/interviewtimes", {
-      headers: {
-        Authorization: `Token ${userToken}`,
-      },
-    })
+    fetch(
+      "http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/interviewtimes",
+      {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((resData) => {
         if (resData.errors) {

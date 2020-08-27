@@ -67,7 +67,7 @@ const Interviewer = props => {
   }
 
   useEffect(() => {
-    fetch('http://admin.180dcusyd.org/api/interviewertimes')
+    fetch('http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/interviewertimes')
       .then(res => res.json())
       .then(resData => {
         let times = []
@@ -156,7 +156,7 @@ const Interviewer = props => {
                 if (sendTimes.length < 2 && availableTimes.length > 1) {
                   return alert('Please select at least two times')
                 } else {
-                  fetch('http://admin.180dcusyd.org/api/interviewertimes', {
+                  fetch('http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/interviewertimes', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'

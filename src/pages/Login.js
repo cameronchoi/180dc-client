@@ -44,13 +44,16 @@ export default function Login(props) {
       setLoading(false);
       return alert("Please input your username and password");
     }
-    fetch("http://admin.180dcusyd.org/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: username.toLowerCase(), password }),
-    })
+    fetch(
+      "http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username.toLowerCase(), password }),
+      }
+    )
       .then((res) => res.json())
       .then((resData) => {
         if (resData.non_field_errors) {

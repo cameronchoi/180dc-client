@@ -115,17 +115,20 @@ const ChangePassword = (props) => {
       setLoading(false);
       return;
     }
-    fetch("http://admin.180dcusyd.org/api/changepassword", {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${userToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        old_password: oldPassword,
-        new_password: newPassword,
-      }),
-    })
+    fetch(
+      "http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/changepassword",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${userToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          old_password: oldPassword,
+          new_password: newPassword,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((resData) => {
         if (resData.errors) {
