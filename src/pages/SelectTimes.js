@@ -95,19 +95,16 @@ const SelectTimes = (props) => {
 
   const positionPostTimes = (position, sendTimes) => {
     setLoading(true);
-    fetch(
-      `http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/${position}times`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${userToken}`,
-        },
-        body: JSON.stringify({
-          availableTimes: sendTimes,
-        }),
-      }
-    )
+    fetch(`https://admin.180dcusyd.org/api/${position}times`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${userToken}`,
+      },
+      body: JSON.stringify({
+        availableTimes: sendTimes,
+      }),
+    })
       .then((res) => res.json())
       .then((resData) => {
         if (resData.errors) {
@@ -168,14 +165,11 @@ const SelectTimes = (props) => {
   }
 
   const positionGetTimes = (position) => {
-    fetch(
-      `http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/${position}times`,
-      {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      }
-    )
+    fetch(`https://admin.180dcusyd.org/api/${position}times`, {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((resData) => {
         if (resData.length === 0) {

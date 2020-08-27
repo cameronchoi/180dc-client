@@ -101,14 +101,11 @@ const UserDetails = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(
-      `http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/${position}`,
-      {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      }
-    )
+    fetch(`https://admin.180dcusyd.org/api/${position}`, {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((resData) => {
         if (resData.errors) {
@@ -130,14 +127,11 @@ const UserDetails = (props) => {
           }
           setDigitalImpact(resData.digital_impact);
         }
-        fetch(
-          "http://180dc-eb.eba-t3x2n6gs.ap-southeast-2.elasticbeanstalk.com/api/interviewtimes",
-          {
-            headers: {
-              Authorization: `Token ${userToken}`,
-            },
-          }
-        )
+        fetch("https://admin.180dcusyd.org/api/interviewtimes", {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        })
           .then((res) => res.json())
           .then((resData) => {
             if (resData.errors) {
