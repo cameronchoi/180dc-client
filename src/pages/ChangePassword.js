@@ -115,7 +115,7 @@ const ChangePassword = (props) => {
       setLoading(false);
       return;
     }
-    fetch("admin.180dcusyd.org/api/changepassword", {
+    fetch("http://admin.180dcusyd.org/api/changepassword", {
       method: "POST",
       headers: {
         Authorization: `Token ${userToken}`,

@@ -101,7 +101,7 @@ const UserDetails = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`admin.180dcusyd.org/api/${position}`, {
+    fetch(`http://admin.180dcusyd.org/api/${position}`, {
       headers: {
         Authorization: `Token ${userToken}`,
       },
@@ -127,7 +127,7 @@ const UserDetails = (props) => {
           }
           setDigitalImpact(resData.digital_impact);
         }
-        fetch("admin.180dcusyd.org/api/interviewtimes", {
+        fetch("http://admin.180dcusyd.org/api/interviewtimes", {
           headers: {
             Authorization: `Token ${userToken}`,
           },
