@@ -44,7 +44,7 @@ export default function Login(props) {
       setLoading(false);
       return alert("Please input your username and password");
     }
-    fetch("http://127.0.0.1:8000/api/login", {
+    fetch("admin.180dcusyd.org/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

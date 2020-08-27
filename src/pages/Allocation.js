@@ -67,7 +67,7 @@ const Allocation = (props) => {
   }
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/interviewtimes", {
+    fetch("admin.180dcusyd.org/api/interviewtimes", {
       headers: {
         Authorization: `Token ${userToken}`,
       },

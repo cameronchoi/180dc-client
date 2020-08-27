@@ -95,7 +95,7 @@ const SelectTimes = (props) => {
 
   const positionPostTimes = (position, sendTimes) => {
     setLoading(true);
-    fetch(`http://127.0.0.1:8000/api/${position}times`, {
+    fetch(`admin.180dcusyd.org/api/${position}times`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +165,7 @@ const SelectTimes = (props) => {
   }
 
   const positionGetTimes = (position) => {
-    fetch(`http://127.0.0.1:8000/api/${position}times`, {
+    fetch(`admin.180dcusyd.org/api/${position}times`, {
       headers: {
         Authorization: `Token ${userToken}`,
       },

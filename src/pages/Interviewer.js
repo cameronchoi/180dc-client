@@ -67,7 +67,7 @@ const Interviewer = props => {
   }
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/interviewertimes')
+    fetch('admin.180dcusyd.org/api/interviewertimes')
       .then(res => res.json())
       .then(resData => {
         let times = []
@@ -156,7 +156,7 @@ const Interviewer = props => {
                 if (sendTimes.length < 2 && availableTimes.length > 1) {
                   return alert('Please select at least two times')
                 } else {
-                  fetch('http://127.0.0.1:8000/api/interviewertimes', {
+                  fetch('admin.180dcusyd.org/api/interviewertimes', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'

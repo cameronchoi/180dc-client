@@ -101,7 +101,7 @@ const UserDetails = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://127.0.0.1:8000/api/${position}`, {
+    fetch(`admin.180dcusyd.org/api/${position}`, {
       headers: {
         Authorization: `Token ${userToken}`,
       },
@@ -127,7 +127,7 @@ const UserDetails = (props) => {
           }
           setDigitalImpact(resData.digital_impact);
         }
-        fetch("http://127.0.0.1:8000/api/interviewtimes", {
+        fetch("admin.180dcusyd.org/api/interviewtimes", {
           headers: {
             Authorization: `Token ${userToken}`,
           },
