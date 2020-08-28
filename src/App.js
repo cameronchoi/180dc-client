@@ -16,13 +16,13 @@ import UserDetails from "./pages/UserDetails";
 import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./contexts/AuthContext";
 
-import "fontsource-raleway";
+import "fontsource-source-sans-pro";
 
 function App() {
   const theme = createMuiTheme({
     typography: {
       // Use the system font.
-      fontFamily: ["Raleway"].join(","),
+      fontFamily: "Source Sans Pro",
     },
     palette: {
       primary: {

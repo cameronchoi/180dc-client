@@ -316,7 +316,7 @@ const SelectTimes = (props) => {
             during that day.
           </Typography>
         </Grid>
-        <Grid item xs={12} className={classes.text}>
+        <Grid item xs={12} className={classes.issueText}>
           <Typography variant="body1">
             2. Click on all your available times during that calendar day.
           </Typography>

@@ -210,7 +210,7 @@ const ChangePassword = (props) => {
               color="textSecondary"
               className={classes.storeText}
             >
-              In the case that you forget your password you will have to contact
+              If you forget your password you will have to contact
               sydney@180.org for a password reset.
             </Typography>
             <TextField

@@ -4837,10 +4837,10 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
-fontsource-raleway@^3.0.3:
+fontsource-source-sans-pro@^3.0.3:
   version "3.0.3"
-  resolved "https://registry.yarnpkg.com/fontsource-raleway/-/fontsource-raleway-3.0.3.tgz#df787d921a296bd1c6c18a73d6276ceb7f74a4ca"
-  integrity sha512-ZhtjGOC1OuWJKWtUetJW9aFGWKjHE8/Aj1f4xNSuZDYBo6BmR5lL1fo3H4H96rHHtxxz+J7OU/XajAxAFcYXAw==
+  resolved "https://registry.yarnpkg.com/fontsource-source-sans-pro/-/fontsource-source-sans-pro-3.0.3.tgz#07a611c6ad314baa0e4ddcf0f9d73ddd5e4df0cf"
+  integrity sha512-1/Z4tf1oJKHPSNE1hVb/AFAsoWyPQ87L2rXD52sRVNos3w7t37JOOMh+LoN9FGFzJuCqJvbTx3FozxmDb92mbA==
 
 for-in@^0.1.3:
   version "0.1.8"
