@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography, Button, CircularProgress } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 import Cookies from "js-cookie";
@@ -41,11 +41,17 @@ const useStyles = makeStyles((theme) => ({
   auto: {
     marginTop: "auto",
   },
+  centerLoading: {
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 }));
 
 const Allocation = (props) => {
   const classes = useStyles();
   const [interviewAllocations, setInterviewAllocations] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const userToken = Cookies.get("userToken");
 
@@ -55,7 +61,9 @@ const Allocation = (props) => {
 
   let table;
 
-  if (interviewAllocations.length > 0) {
+  if (loading) {
+    table = <CircularProgress className={classes.centerLoading} />;
+  } else if (interviewAllocations.length > 0) {
     table = <AllocationTable allocations={interviewAllocations} />;
   } else {
     table = (
@@ -67,6 +75,7 @@ const Allocation = (props) => {
   }
 
   useEffect(() => {
+    setLoading(true);
     fetch("https://admin.180dcusyd.org/api/interviewtimes", {
       headers: {
         Authorization: `Token ${userToken}`,
@@ -82,10 +91,12 @@ const Allocation = (props) => {
           console.log(resData);
           setInterviewAllocations(resData);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        alert("Something went wrong...");
+        alert(`${err}: Please refresh your page and try again.`);
+        setLoading(false);
       });
   }, []);
 
