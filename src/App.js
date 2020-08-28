@@ -16,11 +16,13 @@ import UserDetails from "./pages/UserDetails";
 import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./contexts/AuthContext";
 
+import "fontsource-raleway";
+
 function App() {
   const theme = createMuiTheme({
     typography: {
       // Use the system font.
-      fontFamily: ["-apple-system", "BlinkMacSystemFont"].join(","),
+      fontFamily: ["Raleway"].join(","),
     },
     palette: {
       primary: {
