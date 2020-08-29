@@ -65,8 +65,8 @@ const Email = () => {
     // console.log(formData);
     axios({
       method: "post",
-      url:
-        "https://email-sender-env.eba-hm8mpu7m.ap-southeast-2.elasticbeanstalk.com/upload",
+      url: "https://email.180dcusyd.org/upload",
+      //   url: "http://localhost:5000/upload",
       data: formData,
       headers: { email, password },
     })
@@ -154,7 +154,11 @@ const Email = () => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <button onClick={onFileUpload} className={classes.margin}>
+        <button
+          disabled={success}
+          onClick={onFileUpload}
+          className={classes.margin}
+        >
           Send emails
         </button>
       )}
