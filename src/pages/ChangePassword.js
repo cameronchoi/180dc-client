@@ -211,7 +211,7 @@ const ChangePassword = (props) => {
               className={classes.storeText}
             >
               If you forget your password you will have to contact
-              sydney@180.org for a password reset.
+              sydney@180dc.org for a password reset.
             </Typography>
             <TextField
               error={oldPasswordIncorrect ? true : false}
