@@ -164,6 +164,21 @@ const SelectTimes = (props) => {
     }
   }
 
+  const customIncludes = (times, datetime) => {
+    if (times.length === 0) {
+      console.log("Returns false");
+      return false;
+    }
+    times.forEach((time) => {
+      if (time.dateTime === datetime) {
+        console.log("Returns true");
+        return true;
+      }
+    });
+    console.log("Returns false");
+    return false;
+  };
+
   const positionGetTimes = (position) => {
     fetch(`https://admin.180dcusyd.org/api/${position}times`, {
       headers: {
@@ -180,16 +195,26 @@ const SelectTimes = (props) => {
           return;
         }
         let times = [];
-        resData.forEach((time, i) => {
-          times.push({
-            id: time.id,
-            dateTime: time.datetime,
-            date: new Date(
-              time.datetime.substring(0, time.datetime.length - 1)
-            ),
-            selected: false,
-            index: i,
+        let count = 0;
+        resData.forEach((time) => {
+          let flag = true;
+          times.forEach((t) => {
+            if (t.dateTime === time.datetime) {
+              flag = false;
+            }
           });
+          if (flag) {
+            times.push({
+              id: time.id,
+              dateTime: time.datetime,
+              date: new Date(
+                time.datetime.substring(0, time.datetime.length - 1)
+              ),
+              selected: false,
+              index: count,
+            });
+            count++;
+          }
         });
         refreshTimes(times);
       })

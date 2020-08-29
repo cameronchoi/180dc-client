@@ -88,8 +88,10 @@ const Allocation = (props) => {
             "Something went wrong... Please refresh your page and try again"
           );
         } else {
-          console.log(resData);
-          setInterviewAllocations(resData);
+          let filteredData = resData.filter(
+            (data) => data.interviewees.length > 0
+          );
+          setInterviewAllocations(filteredData);
         }
         setLoading(false);
       })
