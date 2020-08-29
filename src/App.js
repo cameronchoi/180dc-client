@@ -9,9 +9,11 @@ import SelectTimes from "./pages/SelectTimes";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import Allocation from "./pages/Allocation";
 import LoginRoute from "./components/LoginRoute";
 import UserDetails from "./pages/UserDetails";
+import Email from "./pages/Email";
 
 import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -71,6 +73,7 @@ function App() {
                 path="/changepassword"
                 component={ChangePassword}
               />
+              <AdminRoute path="/sendemail" component={Email} />
               <Route path="*" component={NotFound} />
             </Switch>
           </Router>
