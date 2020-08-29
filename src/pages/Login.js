@@ -35,11 +35,13 @@ export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [state, dispatch] = useContext(AuthContext);
 
   const onClickHandler = () => {
     setLoading(true);
+    setErrorMessage("");
     if (username.length === 0 || password.length === 0) {
       setLoading(false);
       return alert("Please input your username and password");
@@ -54,7 +56,8 @@ export default function Login(props) {
       .then((res) => res.json())
       .then((resData) => {
         if (resData.non_field_errors) {
-          alert("Your username or password is wrong");
+          console.log(resData);
+          setErrorMessage("Your username or password is wrong");
           setLoading(false);
         } else {
           console.log(resData);
@@ -99,6 +102,7 @@ export default function Login(props) {
       <Grid item xs={10}>
         <form className={classes.form} noValidate>
           <TextField
+            error={errorMessage ? true : false}
             onChange={(e) => setUsername(e.target.value)}
             value={username}
             variant="outlined"
@@ -112,6 +116,8 @@ export default function Login(props) {
             autoFocus
           />
           <TextField
+            error={errorMessage ? true : false}
+            helperText={errorMessage}
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             variant="outlined"
