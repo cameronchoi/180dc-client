@@ -64,7 +64,17 @@ const Allocation = (props) => {
   if (loading) {
     table = <CircularProgress className={classes.centerLoading} />;
   } else if (interviewAllocations.length > 0) {
-    table = <AllocationTable allocations={interviewAllocations} />;
+    let filteredData = interviewAllocations.filter(
+      (data) => data.interviewees.length > 0
+    );
+
+    if (filteredData.length === 0) {
+      table = (
+        <Typography className={classes.smallText}>
+          Check back here later once interviewees have submitted their times.
+        </Typography>
+      );
+    } else table = <AllocationTable allocations={filteredData} />;
   } else {
     table = (
       <Typography className={classes.smallText}>
@@ -88,10 +98,7 @@ const Allocation = (props) => {
             "Something went wrong... Please refresh your page and try again"
           );
         } else {
-          let filteredData = resData.filter(
-            (data) => data.interviewees.length > 0
-          );
-          setInterviewAllocations(filteredData);
+          setInterviewAllocations(resData);
         }
         setLoading(false);
       })
