@@ -53,7 +53,11 @@ const AllocationTable = ({ allocations }) => {
   };
 
   const convertToDateObj = (string) => {
-    return new Date(string);
+    return new Date(
+      new Date(string).toLocaleString("en-US", {
+        timeZone: "UTC",
+      })
+    );
   };
 
   return (
