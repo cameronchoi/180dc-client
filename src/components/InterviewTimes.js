@@ -76,7 +76,7 @@ const InterviewTimes = ({ times, handleClick }) => {
                 </TableCell>
                 <TableCell align="center">{time.date.toDateString()}</TableCell>
                 <TableCell align="center">
-                  {createTimeString(time.date.getHours())}
+                  {`${createTimeString(time.date.getHours())} AEST`}
                 </TableCell>
               </TableRow>
             );

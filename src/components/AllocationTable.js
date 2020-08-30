@@ -53,7 +53,7 @@ const AllocationTable = ({ allocations }) => {
   };
 
   const convertToDateObj = (string) => {
-    return new Date(string.substring(0, string.length - 1));
+    return new Date(string);
   };
 
   return (
@@ -76,9 +76,9 @@ const AllocationTable = ({ allocations }) => {
                   {convertToDateObj(allocation.datetime).toDateString()}
                 </TableCell>
                 <TableCell>
-                  {createTimeString(
+                  {`${createTimeString(
                     convertToDateObj(allocation.datetime).getHours()
-                  )}
+                  )} AEST`}
                 </TableCell>
                 <TableCell>
                   {allocation.interviewees.length

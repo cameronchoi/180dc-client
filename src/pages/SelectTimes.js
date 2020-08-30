@@ -208,7 +208,9 @@ const SelectTimes = (props) => {
               id: time.id,
               dateTime: time.datetime,
               date: new Date(
-                time.datetime.substring(0, time.datetime.length - 1)
+                new Date(time.datetime).toLocaleString("en-US", {
+                  timeZone: "UTC",
+                })
               ),
               selected: false,
               index: count,
@@ -216,6 +218,7 @@ const SelectTimes = (props) => {
             count++;
           }
         });
+        console.log(times);
         refreshTimes(times);
       })
       .catch((err) => {

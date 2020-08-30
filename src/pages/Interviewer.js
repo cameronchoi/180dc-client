@@ -76,8 +76,8 @@ const Interviewer = props => {
             id: time.id,
             dateTime: time.datetime,
             date: new Date(
-              time.datetime.substring(0, time.datetime.length - 1)
-            ),
+              time
+            ).toLocaleString("en-US", {timeZone: "UTC"}),
             selected: false,
             index: i
           })
