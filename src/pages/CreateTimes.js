@@ -68,14 +68,6 @@ const CreateTimes = () => {
       alert("Please make sure you have clicked a day on the calendar");
       return;
     }
-    if (!from) {
-      alert("Please make sure you have selected a from time");
-      return;
-    }
-    if (!to) {
-      alert("Please make sure you have selected a to time");
-      return;
-    }
     setLoading(true);
     let sendTimes = [];
     for (let i = from; i <= to; i++) {
