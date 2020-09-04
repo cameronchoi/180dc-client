@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, CircularProgress } from "@material-ui/core";
 
+import { GoogleLogin } from "react-google-login";
+
 const useStyles = makeStyles((theme) => ({
   center: {
     // textAlign: "center",
@@ -65,20 +67,20 @@ const Email = () => {
     // console.log(formData);
     axios({
       method: "post",
-      url: "https://email.180dcusyd.org/upload",
-      //   url: "http://localhost:5000/upload",
+      //   url: "https://email.180dcusyd.org/upload",
+      url: "http://localhost:5000/upload",
       data: formData,
       headers: { email, password },
     })
       .then((res) => {
+        console.log("comes in here????");
         console.log(res);
         setLoading(false);
         setSuccess(true);
       })
       .catch((err) => {
-        console.log("comes in here");
-        alert(err);
-        console.log(err);
+        console.log(err.response);
+        alert(err.response.data.response);
         setLoading(false);
       });
   };
@@ -108,11 +110,22 @@ const Email = () => {
     }
   };
 
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
+
   return (
     <div className={classes.center}>
       <Typography variant="h4" className={classes.title}>
         180DC Email automation
       </Typography>
+      <GoogleLogin
+        clientId="884400109473-n6r2s2kb96m67lrfuvathpsecoj3bupa.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={"single_host_origin"}
+      />
       <Typography className={classes.margin}>
         1. Go to this
         <a

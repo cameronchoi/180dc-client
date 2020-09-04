@@ -19,6 +19,8 @@ import ChangePassword from "./pages/ChangePassword";
 import { AuthProvider } from "./contexts/AuthContext";
 
 import "fontsource-source-sans-pro";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CreateTimes from "./pages/CreateTimes";
 
 function App() {
   const theme = createMuiTheme({
@@ -65,6 +67,7 @@ function App() {
         <AuthProvider>
           <Router>
             <Switch>
+              <Route path="/privacypolicy" component={PrivacyPolicy} />
               <LoginRoute path="/login" component={Login} />
               <ProtectedRoute path="/allocation" component={Allocation} />
               <ProtectedRoute exact path="/" component={UserDetails} />
@@ -74,6 +77,7 @@ function App() {
                 component={ChangePassword}
               />
               <AdminRoute path="/sendemail" component={Email} />
+              <AdminRoute path="/createtimes" component={CreateTimes} />
               <Route path="*" component={NotFound} />
             </Switch>
           </Router>
