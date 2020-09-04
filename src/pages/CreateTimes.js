@@ -17,10 +17,11 @@ import Cookies from "js-cookie";
 const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: "center",
-    margin: 20,
+    paddingTop: 20,
   },
   bottomText: {
     textAlign: "center",
+    marginTop: 20,
     marginBottom: 40,
     marginLeft: 20,
     marginRight: 20,
