@@ -109,7 +109,7 @@ const Email = () => {
   return (
     <div className={classes.center}>
       <Typography variant="h4" className={classes.title}>
-        180DC Email automation
+        180DC Email Automation
       </Typography>
       <Typography className={classes.margin}>
         1. Go to this{" "}
