@@ -112,13 +112,13 @@ const Email = () => {
         180DC Email automation
       </Typography>
       <Typography className={classes.margin}>
-        1. Go to this
+        1. Go to this{" "}
         <a
           href="https://myaccount.google.com/u/1/lesssecureapps"
           target="_blank"
         >
-          {" link "}
-        </a>
+          link
+        </a>{" "}
         and turn less secure app access ON for the time being. Once all the
         emails have been sent out, remember to turn this back off. Make sure you
         are on the gmail account you will be sending from.
