@@ -9,12 +9,13 @@ const useStyles = makeStyles((theme) => ({
     // textAlign: "center",
     marginLeft: 20,
     marginRight: 20,
+    height: "100vh",
+    paddingTop: 20,
   },
   margin: {
     marginBottom: 20,
   },
   title: {
-    marginTop: 20,
     marginBottom: 20,
   },
 }));
