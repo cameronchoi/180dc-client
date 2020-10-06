@@ -118,7 +118,6 @@ const SelectTimes = (props) => {
           }
           setLoading(false);
         } else {
-          console.log(resData);
           setLoading(false);
           setOpenModal(true);
         }

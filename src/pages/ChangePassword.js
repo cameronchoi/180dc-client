@@ -137,7 +137,6 @@ const ChangePassword = (props) => {
           setLoading(false);
           return;
         }
-        console.log(resData);
         setLoading(false);
         setOpenModal(true);
       })

@@ -60,7 +60,6 @@ export default function Login(props) {
           setErrorMessage("Your username or password is wrong");
           setLoading(false);
         } else {
-          console.log(resData);
           dispatch({
             type: "SIGN-IN",
             token: resData.token,

@@ -113,7 +113,6 @@ const UserDetails = (props) => {
             "Something went wrong... Please refresh your page and try again"
           );
         } else {
-          console.log(resData);
           setFirstName(resData.user.first_name);
           setLastName(resData.user.last_name);
           setEmail(resData.user.email);
@@ -139,7 +138,6 @@ const UserDetails = (props) => {
                 "Something went wrong... Please refresh your page and try again"
               );
             } else {
-              console.log(resData);
               if (resData.length > 0) {
                 setTimeAllocated(true);
               }

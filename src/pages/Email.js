@@ -63,7 +63,7 @@ const Email = () => {
 
     // Request made to the backend api
     // Send formData object
-    // console.log(formData);
+
     axios({
       method: "post",
       url: "https://email.180dcusyd.org/upload",
