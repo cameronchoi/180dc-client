@@ -13,6 +13,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import Cookies from "js-cookie";
+import { proj_confs } from '../config.js';
+
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -75,7 +77,7 @@ const CreateTimes = () => {
       sendTimes.push(createISOString(createDateString(date), i));
     }
 
-    fetch("https://admin.180dcusyd.org/api/createtimes", {
+    fetch(new URL("api/createtimes", proj_confs.root).href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

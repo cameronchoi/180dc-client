@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AllocationTable from "../components/AllocationTable";
+import { proj_confs } from '../config.js';
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -86,7 +87,7 @@ const Allocation = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://admin.180dcusyd.org/api/interviewtimes", {
+    fetch(new URL("api/interviewtimes", proj_confs.root).href, {
       headers: {
         Authorization: `Token ${userToken}`,
       },

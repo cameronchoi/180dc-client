@@ -9,13 +9,14 @@ import Calendar from 'react-calendar'
 import InterviewTimes from '../components/InterviewTimes'
 import Footer from '../components/Footer'
 import './calendar.css'
+import { proj_confs } from '../config.js';
 
 const useStyles = makeStyles(theme => ({
   center: {
     textAlign: 'center'
   },
   table: {
-    marginBottom: 
+    // marginBottom: 
   },
   submitButton: {
     marginBottom: 30,
@@ -67,7 +68,7 @@ const Interviewer = props => {
   }
 
   useEffect(() => {
-    fetch('https://admin.180dcusyd.org/api/interviewertimes')
+    fetch(new URL("api/interviewertimes", proj_confs.root).href)
       .then(res => res.json())
       .then(resData => {
         let times = []
@@ -156,7 +157,7 @@ const Interviewer = props => {
                 if (sendTimes.length < 2 && availableTimes.length > 1) {
                   return alert('Please select at least two times')
                 } else {
-                  fetch('https://admin.180dcusyd.org/api/interviewertimes', {
+                  fetch(new URL("api/interviewertimes", proj_confs.root).href, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'

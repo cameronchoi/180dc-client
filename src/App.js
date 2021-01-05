@@ -72,10 +72,7 @@ function App() {
               <ProtectedRoute path="/allocation" component={Allocation} />
               <ProtectedRoute exact path="/" component={UserDetails} />
               <ProtectedRoute path="/times" component={SelectTimes} />
-              <ProtectedRoute
-                path="/changepassword"
-                component={ChangePassword}
-              />
+              <ProtectedRoute path="/changepassword" component={ChangePassword} />
               <AdminRoute path="/sendemail" component={Email} />
               <AdminRoute path="/createtimes" component={CreateTimes} />
               <Route path="*" component={NotFound} />

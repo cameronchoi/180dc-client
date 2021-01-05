@@ -11,6 +11,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 import Cookies from "js-cookie";
 import { CircularProgress } from "@material-ui/core";
+import { proj_confs } from '../config.js';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -46,7 +47,7 @@ export default function Login(props) {
       setLoading(false);
       return alert("Please input your username and password");
     }
-    fetch("https://admin.180dcusyd.org/api/login", {
+    fetch(new URL("api/login", proj_confs.root).href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

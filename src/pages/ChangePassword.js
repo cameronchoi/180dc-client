@@ -24,6 +24,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+import { proj_confs } from '../config.js';
+
+
 const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
@@ -115,7 +118,7 @@ const ChangePassword = (props) => {
       setLoading(false);
       return;
     }
-    fetch("https://admin.180dcusyd.org/api/changepassword", {
+    fetch(new URL("api/changepassword", proj_confs.root).href, {
       method: "POST",
       headers: {
         Authorization: `Token ${userToken}`,

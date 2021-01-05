@@ -17,6 +17,7 @@ import Calendar from "react-calendar";
 import InterviewTimes from "../components/InterviewTimes";
 import Footer from "../components/Footer";
 import "./calendar.css";
+import { proj_confs } from '../config.js';
 
 import Cookies from "js-cookie";
 
@@ -95,7 +96,7 @@ const SelectTimes = (props) => {
 
   const positionPostTimes = (position, sendTimes) => {
     setLoading(true);
-    fetch(`https://admin.180dcusyd.org/api/${position}times`, {
+    fetch(new URL(`api/${position}times`, proj_confs.root).href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -179,7 +180,7 @@ const SelectTimes = (props) => {
   };
 
   const positionGetTimes = (position) => {
-    fetch(`https://admin.180dcusyd.org/api/${position}times`, {
+    fetch(new URL(`api/${position}times`, proj_confs.root).href, {
       headers: {
         Authorization: `Token ${userToken}`,
       },
