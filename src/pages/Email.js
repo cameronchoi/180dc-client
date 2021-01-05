@@ -3,6 +3,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, CircularProgress } from "@material-ui/core";
+import { proj_confs } from "../config";
+
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   center: {
@@ -27,6 +30,8 @@ const Email = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  
+  const userToken = Cookies.get("userToken");
 
   const onFileChange = (event) => {
     // Update the state
@@ -41,7 +46,8 @@ const Email = () => {
       setLoading(false);
       return;
     }
-    if (selectedFile.type !== "text/csv") {
+    // some weird windows bug where csv are identified as excel
+    if (selectedFile.type !== "text/csv" && selectedFile.type !== "application/vnd.ms-excel") {
       alert("Please upload a csv type file");
       setLoading(false);
       return;
@@ -56,7 +62,9 @@ const Email = () => {
     const formData = new FormData();
 
     // Update the formData object
-    formData.append("file", selectedFile);
+    formData.append("time_csv", selectedFile);
+    formData.append("email", email);
+    formData.append("password", password);
 
     // Details of the uploaded file
     console.log(selectedFile);
@@ -64,11 +72,12 @@ const Email = () => {
     // Request made to the backend api
     // Send formData object
 
-    axios({
-      method: "post",
-      url: "https://email.180dcusyd.org/upload",
-      data: formData,
-      headers: { email, password },
+    fetch(new URL("api/sendemail", proj_confs.root).href, {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+      body: formData,
     })
       .then((res) => {
         console.log(res);
@@ -86,13 +95,14 @@ const Email = () => {
   // file upload is complete
   const fileData = () => {
     if (selectedFile) {
+      var last_mod = new Date(selectedFile.lastModified);
       return (
         <div className={classes.margin}>
           <Typography>File Details:</Typography>
           <Typography>File Name: {selectedFile.name}</Typography>
           <Typography>File Type: {selectedFile.type}</Typography>
           <Typography>
-            Last Modified: {selectedFile.lastModifiedDate.toDateString()}
+            Last Modified: {last_mod.toDateString()}
           </Typography>
         </div>
       );
@@ -154,7 +164,7 @@ const Email = () => {
         <CircularProgress />
       ) : (
         <button
-          disabled={success}
+          // disabled={success}
           onClick={onFileUpload}
           className={classes.margin}
         >
