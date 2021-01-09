@@ -30,6 +30,7 @@ const Email = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [wrongCred, setWrongCred] = useState(false);
   
   const userToken = Cookies.get("userToken");
 
@@ -41,6 +42,8 @@ const Email = () => {
   // On file upload (click the upload button)
   const onFileUpload = () => {
     setLoading(true);
+    setSuccess(false);
+    setWrongCred(false);
     if (selectedFile === null) {
       alert("Please upload the csv file.");
       setLoading(false);
@@ -82,7 +85,11 @@ const Email = () => {
       .then((res) => {
         console.log(res);
         setLoading(false);
-        setSuccess(true);
+        if (res.status === 403) {
+          setWrongCred(true);
+        } else {
+          setSuccess(true);
+        }
       })
       .catch((err) => {
         console.log(err.response);
@@ -123,24 +130,12 @@ const Email = () => {
         180DC Email Automation
       </Typography>
       <Typography className={classes.margin}>
-        1. Go to this{" "}
-        <a
-          href="https://myaccount.google.com/u/1/lesssecureapps"
-          target="_blank"
-        >
-          link
-        </a>{" "}
-        and turn less secure app access ON for the time being. Once all the
-        emails have been sent out, remember to turn this back off. Make sure you
-        are on the gmail account you will be sending from.
-      </Typography>
-      <Typography className={classes.margin}>
-        2. Upload the csv file with the emails and auto-generated passwords.
+        1. Upload the csv file with the emails and auto-generated passwords.
       </Typography>
       <input type="file" onChange={onFileChange} className={classes.margin} />
       {fileData()}
       <Typography className={classes.margin}>
-        3. Input the email you would like to send the emails from and the
+        2. Input the email you would like to send the emails from and the
         password to that email.
       </Typography>
       <Typography>Email</Typography>
@@ -159,23 +154,29 @@ const Email = () => {
         onChange={(e) => setPassword(e.target.value)}
         className={classes.margin}
       />
-      <Typography className={classes.margin}>4. Press send emails!</Typography>
+      <Typography className={classes.margin}>3. Press send emails!</Typography>
+      {success ? (
+        <Typography variant="h5">Emails successfully sent!</Typography>
+      ) : (
+        <></>
+      )}
+      {wrongCred ? (
+        <Typography variant="h5">Incorrent password/email!</Typography>
+      ) : (
+        <></>
+      )}
       {loading ? (
         <CircularProgress />
       ) : (
         <button
-          // disabled={success}
+          disabled={success}
           onClick={onFileUpload}
           className={classes.margin}
         >
           Send emails
         </button>
       )}
-      {success ? (
-        <Typography variant="h5">Emails successfully sent!</Typography>
-      ) : (
-        <></>
-      )}
+      
     </div>
   );
 };
