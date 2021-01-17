@@ -25,38 +25,41 @@ const useStyles = makeStyles((theme) => ({
 
 const Email = () => {
   const classes = useStyles();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileDict, setFileDict] = useState(null);
+  const [content, setContent] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [wrongCred, setWrongCred] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   
   const userToken = Cookies.get("userToken");
-
-  const onFileChange = (event) => {
-    // Update the state
-    setSelectedFile(event.target.files[0]);
-  };
 
   // On file upload (click the upload button)
   const onFileUpload = () => {
     setLoading(true);
     setSuccess(false);
-    setWrongCred(false);
-    if (selectedFile === null) {
+    setErrorMessage("");
+    if (fileDict === null) {
       alert("Please upload the csv file.");
       setLoading(false);
       return;
-    }
-    // some weird windows bug where csv are identified as excel
-    if (selectedFile.type !== "text/csv" && selectedFile.type !== "application/vnd.ms-excel") {
+    }else if (content === null) {
+      alert("Please enter content.");
+      setLoading(false);
+      return;
+    }else if (fileDict.type !== "text/csv" && fileDict.type !== "application/vnd.ms-excel") {
+      // some weird windows bug where csv are identified as excel
       alert("Please upload a csv type file");
       setLoading(false);
       return;
-    }
-    if (email.length === 0 || password.length === 0) {
+    }else if (email.length === 0 || password.length === 0) {
       alert("Please input the email and password.");
+      setLoading(false);
+      return;
+    }else if (subject.length === 0) {
+      alert("Please input subject.");
       setLoading(false);
       return;
     }
@@ -65,12 +68,11 @@ const Email = () => {
     const formData = new FormData();
 
     // Update the formData object
-    formData.append("time_csv", selectedFile);
+    formData.append("file_dict", fileDict);
     formData.append("email", email);
     formData.append("password", password);
-
-    // Details of the uploaded file
-    console.log(selectedFile);
+    formData.append("subject", subject);
+    formData.append("content", content);
 
     // Request made to the backend api
     // Send formData object
@@ -82,45 +84,38 @@ const Email = () => {
       },
       body: formData,
     })
-      .then((res) => {
-        console.log(res);
-        setLoading(false);
-        if (res.status === 403) {
-          setWrongCred(true);
-        } else {
-          setSuccess(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-        alert(err.response.data.response);
-        setLoading(false);
-      });
+    .then((res) => res.json())
+    .then((res) => {
+      setLoading(false);
+      if (res.status === "success") {
+        setSuccess(true);
+      }else{
+        setErrorMessage(res.message);
+      }
+    })
+    .catch((err) => {
+      alert(err.response.data.response);
+      setLoading(false);
+    });
   };
 
   // File content to be displayed after
   // file upload is complete
   const fileData = () => {
-    if (selectedFile) {
-      var last_mod = new Date(selectedFile.lastModified);
+    if (fileDict) {
+      var last_mod = new Date(fileDict.lastModified);
       return (
         <div className={classes.margin}>
           <Typography>File Details:</Typography>
-          <Typography>File Name: {selectedFile.name}</Typography>
-          <Typography>File Type: {selectedFile.type}</Typography>
+          <Typography>File Name: {fileDict.name}</Typography>
+          <Typography>File Type: {fileDict.type}</Typography>
           <Typography>
             Last Modified: {last_mod.toDateString()}
           </Typography>
         </div>
       );
     } else {
-      return (
-        <div className={classes.margin}>
-          <Typography>
-            Choose a file before Pressing the Upload button
-          </Typography>
-        </div>
-      );
+      return;
     }
   };
 
@@ -130,9 +125,9 @@ const Email = () => {
         180DC Email Automation
       </Typography>
       <Typography className={classes.margin}>
-        1. Upload the csv file with the emails and auto-generated passwords.
+        1. Upload the csv file with the target address and content dictionary. Must contain a column with 'address'.
       </Typography>
-      <input type="file" onChange={onFileChange} className={classes.margin} />
+      <input type="file" onChange={(e) => setFileDict(e.target.files[0])} className={classes.margin} />
       {fileData()}
       <Typography className={classes.margin}>
         2. Input the email you would like to send the emails from and the
@@ -140,7 +135,7 @@ const Email = () => {
       </Typography>
       <Typography>Email</Typography>
       <input
-        type="text"
+        type="email"
         name="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -154,14 +149,38 @@ const Email = () => {
         onChange={(e) => setPassword(e.target.value)}
         className={classes.margin}
       />
-      <Typography className={classes.margin}>3. Press send emails!</Typography>
+      <Typography className={classes.margin}>
+        3. Subject line with python formatting rules
+      </Typography>
+      <Typography>Subject</Typography>
+      <textarea
+        cols="100"
+        rows="10"
+        name="subject"
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        className={classes.margin}
+      />
+      <Typography className={classes.margin}>
+        4. Content with python formatting rules
+      </Typography>
+      <Typography>Subject</Typography>
+      <textarea
+        cols="100"
+        rows="10"
+        name="content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        className={classes.margin}
+      />
+      <Typography className={classes.margin}>5. Press send emails!</Typography>
       {success ? (
         <Typography variant="h5">Emails successfully sent!</Typography>
       ) : (
         <></>
       )}
-      {wrongCred ? (
-        <Typography variant="h5">Incorrent password/email!</Typography>
+      {errorMessage !== "" ? (
+        <Typography variant="h5">Error: {errorMessage}</Typography>
       ) : (
         <></>
       )}
@@ -169,7 +188,7 @@ const Email = () => {
         <CircularProgress />
       ) : (
         <button
-          disabled={success}
+          // disabled={success}
           onClick={onFileUpload}
           className={classes.margin}
         >
