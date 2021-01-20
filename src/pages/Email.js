@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, CircularProgress } from "@material-ui/core";
@@ -152,7 +150,6 @@ const Email = () => {
       <Typography className={classes.margin}>
         3. Subject line with python formatting rules
       </Typography>
-      <Typography>Subject</Typography>
       <textarea
         cols="100"
         rows="10"
@@ -164,7 +161,6 @@ const Email = () => {
       <Typography className={classes.margin}>
         4. Content with python formatting rules
       </Typography>
-      <Typography>Subject</Typography>
       <textarea
         cols="100"
         rows="10"
