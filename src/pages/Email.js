@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const Email = () => {
   const classes = useStyles();
   const [fileDict, setFileDict] = useState(null);
+  const [signature, setSignature] = useState(null);
   const [content, setContent] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,6 +72,9 @@ const Email = () => {
     formData.append("password", password);
     formData.append("subject", subject);
     formData.append("content", content);
+    if (signature) {
+      formData.append("signature", signature);
+    }
 
     // Request made to the backend api
     // Send formData object
@@ -92,7 +96,7 @@ const Email = () => {
       }
     })
     .catch((err) => {
-      alert(err.response.data.response);
+      alert(err);
       setLoading(false);
     });
   };
@@ -169,7 +173,11 @@ const Email = () => {
         onChange={(e) => setContent(e.target.value)}
         className={classes.margin}
       />
-      <Typography className={classes.margin}>5. Press send emails!</Typography>
+      <Typography className={classes.margin}>
+        6. Upload html signature (optional).
+      </Typography>
+      <input type="file" onChange={(e) => setSignature(e.target.files[0])} className={classes.margin} />
+      <Typography className={classes.margin}>6. Press send emails!</Typography>
       {success ? (
         <Typography variant="h5">Emails successfully sent!</Typography>
       ) : (
