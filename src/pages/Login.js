@@ -136,6 +136,7 @@ export default function Login(props) {
             </div>
           ) : (
             <Button
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
