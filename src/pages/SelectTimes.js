@@ -179,56 +179,7 @@ const SelectTimes = (props) => {
     return false;
   };
 
-  const positionGetTimes = (position) => {
-    fetch(new URL(`api/${position}times`, proj_confs.root).href, {
-      headers: {
-        Authorization: `Token ${userToken}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((resData) => {
-        if (resData.length === 0) {
-          alert(
-            "No times left. If you have not been allocated an interview yet please contact sydney@180dc.org"
-          );
-          props.history.push("/");
-          return;
-        }
-        let times = [];
-        let count = 0;
-        resData.forEach((time) => {
-          let flag = true;
-          times.forEach((t) => {
-            if (t.dateTime === time.datetime) {
-              flag = false;
-            }
-          });
-          if (flag) {
-            times.push({
-              id: time.id,
-              dateTime: time.datetime,
-              date: new Date(
-                new Date(time.datetime).toLocaleString("en-US", {
-                  timeZone: "UTC",
-                })
-              ),
-              selected: false,
-              index: count,
-            });
-            count++;
-          }
-        });
-        console.log(times);
-        refreshTimes(times);
-      })
-      .catch((err) => {
-        alert("Unable to fetch data...");
-        props.history.push("/");
-      });
-  };
-
   const refreshTimes = (times) => {
-    console.log("refreshed");
     availableTimes.forEach((prevTime) => {
       for (let i = 0; i < times.length; i++) {
         if (times[i].id === prevTime.id) {
@@ -238,7 +189,6 @@ const SelectTimes = (props) => {
       }
     });
     setAvailableTimes(times);
-
     if (date === undefined) {
       setDate(times[0].date);
       setStartDate(times[0].date);
@@ -273,22 +223,54 @@ const SelectTimes = (props) => {
   };
 
   useEffect(() => {
-    positionGetTimes(position);
-    const timeoutID = setTimeout(() => {
-      alert(
-        "You have exceeded 10 minutes for selecting times. Please try again."
-      );
-      props.history.push("/");
-    }, 600000);
-
-    return () => {
-      clearTimeout(timeoutID);
+    var socket = new WebSocket(new URL(`ws/interview_data_stream?token=${userToken}`, proj_confs.ws).href);
+    socket.onopen = () => {
+      console.log('WebSocket open');
     };
-  }, []);
-
-  useInterval(() => {
-    positionGetTimes(position);
-  }, 5000);
+    socket.onmessage = e => {
+      var data = JSON.parse(e.data);
+      if (data.length === 0) {
+        alert(
+          "No times left. If you have not been allocated an interview yet please contact sydney@180dc.org"
+        );
+        props.history.push("/");
+        return;
+      }
+      let times = [];
+      let count = 0;
+      data.forEach((time) => {
+        let flag = true;
+        times.forEach((t) => {
+          if (t.dateTime === time.datetime) {
+            flag = false;
+          }
+        });
+        if (flag) {
+          times.push({
+            id: time.id,
+            dateTime: time.datetime,
+            date: new Date(
+              new Date(time.datetime).toLocaleString("en-US", {
+                timeZone: "UTC",
+              })
+            ),
+            selected: false,
+            index: count,
+          });
+          count++;
+        }
+      });
+      console.log('refere');
+      refreshTimes(times);
+    };
+    socket.onerror = e => {
+      console.log(e.message);
+    };
+    socket.onclose = () => {
+      console.log("WebSocket closed ");
+    };
+    return () => {socket.close();}
+  });
 
   const handleClick = (index) => {
     let newTimes = [...availableTimes];
