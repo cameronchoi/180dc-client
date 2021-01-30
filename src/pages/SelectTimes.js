@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Grid,
   Typography,
@@ -85,6 +85,7 @@ const SelectTimes = (props) => {
   const [endDate, setEndDate] = useState();
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const socket = useRef(null);
 
   const onChangeHandler = (nextDate) => {
     setDate(nextDate);
@@ -221,13 +222,23 @@ const SelectTimes = (props) => {
       setDayTimes(currentDayTimes);
     }
   };
-
   useEffect(() => {
-    var socket = new WebSocket(new URL(`ws/interview_data_stream?token=${userToken}`, proj_confs.ws).href);
-    socket.onopen = () => {
+    socket.current = new WebSocket(new URL(`ws/interview_data_stream?token=${userToken}`, proj_confs.ws).href);
+    socket.current.onopen = () => {
       console.log('WebSocket open');
     };
-    socket.onmessage = e => {
+    socket.current.onerror = e => {
+      console.log(e.message);
+    };
+    socket.current.onclose = () => {
+      console.log("WebSocket closed ");
+    };
+    return () => {socket.current.close();}
+  }, []);
+
+  useEffect(() => {
+    if (!socket.current) return;
+    socket.current.onmessage = e => {
       var data = JSON.parse(e.data);
       if (data.length === 0) {
         alert(
@@ -260,17 +271,9 @@ const SelectTimes = (props) => {
           count++;
         }
       });
-      console.log('refere');
       refreshTimes(times);
     };
-    socket.onerror = e => {
-      console.log(e.message);
-    };
-    socket.onclose = () => {
-      console.log("WebSocket closed ");
-    };
-    return () => {socket.close();}
-  });
+  }, [dayTimes, date, startDate, endDate, availableTimes]);
 
   const handleClick = (index) => {
     let newTimes = [...availableTimes];
