@@ -218,7 +218,7 @@ const SelectTimes = (props) => {
       console.log("WebSocket closed ");
     };
     return () => {socket.current.close();}
-  }, []);
+  }, [userToken]);
 
   useEffect(() => {
     if (!socket.current) return;
@@ -257,7 +257,7 @@ const SelectTimes = (props) => {
       });
       refreshTimes(times);
     };
-  }, [dayTimes, date, startDate, endDate, availableTimes]);
+  }, [refreshTimes, props.history]);
 
   const handleClick = (index) => {
     let newTimes = [...availableTimes];
