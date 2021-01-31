@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
-import useInterval from "../hooks/useInterval";
 
 import { differenceInCalendarDays, isBefore, isAfter, isEqual } from "date-fns";
 import Header from "../components/Header";
@@ -164,21 +163,6 @@ const SelectTimes = (props) => {
       return flag;
     }
   }
-
-  const customIncludes = (times, datetime) => {
-    if (times.length === 0) {
-      console.log("Returns false");
-      return false;
-    }
-    times.forEach((time) => {
-      if (time.dateTime === datetime) {
-        console.log("Returns true");
-        return true;
-      }
-    });
-    console.log("Returns false");
-    return false;
-  };
 
   const refreshTimes = (times) => {
     availableTimes.forEach((prevTime) => {
