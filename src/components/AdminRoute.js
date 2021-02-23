@@ -10,7 +10,7 @@ const Admin = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        admin ? (
+        admin === "true" ? (
           <Component {...props} />
         ) : (
           <Redirect
