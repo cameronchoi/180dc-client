@@ -1,4 +1,4 @@
-var base_url = '127.0.0.1:8000'
+var base_url = 'admin.180dcusyd.org'
 
 
 export const proj_confs = {
