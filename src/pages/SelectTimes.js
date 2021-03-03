@@ -16,7 +16,7 @@ import Calendar from "react-calendar";
 import InterviewTimes from "../components/InterviewTimes";
 import Footer from "../components/Footer";
 import "./calendar.css";
-import { proj_confs } from '../config.js';
+import { proj_confs } from "../config.js";
 
 import Cookies from "js-cookie";
 
@@ -206,23 +206,28 @@ const SelectTimes = (props) => {
       setDayTimes(currentDayTimes);
     }
   };
+
   useEffect(() => {
-    socket.current = new WebSocket(new URL(`ws/interview_data_stream?token=${userToken}`, proj_confs.ws).href);
+    socket.current = new WebSocket(
+      new URL(`ws/interview_data_stream?token=${userToken}`, proj_confs.ws).href
+    );
     socket.current.onopen = () => {
-      console.log('WebSocket open');
+      console.log("WebSocket open");
     };
-    socket.current.onerror = e => {
+    socket.current.onerror = (e) => {
       console.log(e.message);
     };
     socket.current.onclose = () => {
       console.log("WebSocket closed ");
     };
-    return () => {socket.current.close();}
+    return () => {
+      socket.current.close();
+    };
   }, [userToken]);
 
   useEffect(() => {
     if (!socket.current) return;
-    socket.current.onmessage = e => {
+    socket.current.onmessage = (e) => {
       var data = JSON.parse(e.data);
       if (data.length === 0) {
         alert(
@@ -233,6 +238,7 @@ const SelectTimes = (props) => {
       }
       let times = [];
       let count = 0;
+
       data.forEach((time) => {
         let flag = true;
         times.forEach((t) => {
@@ -255,6 +261,13 @@ const SelectTimes = (props) => {
           count++;
         }
       });
+
+      times.sort((a, b) =>
+        a.dateTime > b.dateTime ? 1 : b.dateTime > a.dateTime ? -1 : 0
+      );
+
+      console.log(times);
+
       refreshTimes(times);
     };
   }, [refreshTimes, props.history]);
