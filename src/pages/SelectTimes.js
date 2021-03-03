@@ -266,8 +266,6 @@ const SelectTimes = (props) => {
         a.dateTime > b.dateTime ? 1 : b.dateTime > a.dateTime ? -1 : 0
       );
 
-      console.log(times);
-
       refreshTimes(times);
     };
   }, [refreshTimes, props.history]);
