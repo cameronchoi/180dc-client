@@ -236,6 +236,13 @@ const SelectTimes = (props) => {
         props.history.push("/");
         return;
       }
+
+      console.log(data);
+
+      data.sort((a, b) =>
+        a.datetime > b.datetime ? 1 : b.datetime > a.datetime ? -1 : 0
+      );
+
       let times = [];
       let count = 0;
 
@@ -261,10 +268,6 @@ const SelectTimes = (props) => {
           count++;
         }
       });
-
-      times.sort((a, b) =>
-        a.dateTime > b.dateTime ? 1 : b.dateTime > a.dateTime ? -1 : 0
-      );
 
       refreshTimes(times);
     };
